@@ -1,0 +1,19 @@
+.root {
+  width: 220px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contained {}
+
+.text {}
+
+.primary {
+  background: #323330;
+}
+
+.secondary {
+  background: #F0DB4F;
+}
