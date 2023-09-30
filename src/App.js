@@ -1,4 +1,5 @@
 import React from 'react'
+import FullPageLoader from './components/FullPageLoader'
 
 export class App extends React.Component {
   state = {
@@ -38,7 +39,8 @@ export class App extends React.Component {
   render () {
     return (
       <div>
-        APP
+        <h1>APP</h1>
+        <FullPageLoader/>
       </div>
     )
   }
