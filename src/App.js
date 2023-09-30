@@ -2,14 +2,15 @@ import React from 'react'
 import FullPageLoader from './components/FullPageLoader'
 import Typography from './components/Typography'
 import Button from './components/Button'
+import FullPageMessage from './components/FullPageMessage'
 
 export class App extends React.Component {
   state = {
     // global state
     isLoading: false,
-    hasError: false,
+    hasError: true,
     errorMessage: '',
-    isInfoDisplayed: false,
+    isInfoDisplayed: true,
     infoMessage: '',
 
     // user state
@@ -39,14 +40,18 @@ export class App extends React.Component {
   }
 
   render () {
-    const { isLoading } = this.state
+    const { isInfoDisplayed, isLoading } = this.state
     return (
       <div>
         <h1>APP</h1>
         {
-          isLoading ?
-            <FullPageLoader/>
-            : null
+          isInfoDisplayed
+            ? <FullPageMessage
+                message={'INFO'}
+              /> :
+            isLoading ?
+              <FullPageLoader/>
+              : null
         }
         <Typography
           variant={'h1'}
