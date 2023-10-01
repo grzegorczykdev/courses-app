@@ -47,6 +47,7 @@ export class App extends React.Component {
         {
           isInfoDisplayed
             ? <FullPageMessage
+                iconVariant={'info'}
                 message={'INFO'}
               /> :
             isLoading ?

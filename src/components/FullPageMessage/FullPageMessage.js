@@ -1,15 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-// import Error from './Icon'
+import IconInfo from './IconInfo'
+import IconError from './IconError'
 import Button from '../Button'
 
 import classes from './styles.module.css'
+
 import Typography from '../Typography'
 
-export const FullPageLoader = (props) => {
+export const FullPageMessage = (props) => {
   const {
     message,
     buttonLabel = 'GO BACK',
+    iconVariant = 'info',
     className,
     ...otherProps
   } = props
@@ -19,6 +22,7 @@ export const FullPageLoader = (props) => {
       {...otherProps}
     >
       <div className={classes.wrapper}>
+        {iconVariant === 'info' ? <IconInfo/> : iconVariant === 'error' ? <IconError/> : null}
         <Typography
           variant={'h3'}
           className={classes.message}
@@ -37,10 +41,11 @@ export const FullPageLoader = (props) => {
   )
 }
 
-FullPageLoader.propTypes = {
+FullPageMessage.propTypes = {
   className: PropTypes.string,
   message: PropTypes.string.isRequired,
+  iconVariant: PropTypes.oneOf(['error', 'info']),
   buttonLabel: PropTypes.string
 }
 
-export default FullPageLoader
+export default FullPageMessage

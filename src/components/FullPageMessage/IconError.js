@@ -1,5 +1,5 @@
 import * as React from 'react'
-const Error = (props) => (
+const IconError = (props) => (
   <svg
     xmlns={'http://www.w3.org/2000/svg'}
     width={84}
@@ -14,4 +14,4 @@ const Error = (props) => (
     />
   </svg>
 )
-export default Error
+export default IconError
