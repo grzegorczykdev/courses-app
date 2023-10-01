@@ -3,6 +3,7 @@ import FullPageLoader from './components/FullPageLoader'
 import Typography from './components/Typography'
 import Button from './components/Button'
 import FullPageMessage from './components/FullPageMessage'
+import TextField from './components/TextField'
 
 import FullPageLayout from './components/FullPageLayout'
 import Message from './components/Message'
@@ -10,11 +11,11 @@ import Message from './components/Message'
 export class App extends React.Component {
   state = {
     // global state
-    isLoading: true,
-    hasError: true,
-    errorMessage: 'Jest błąd',
+    isLoading: false,
+    hasError: false,
+    errorMessage: '',
     isInfoDisplayed: false,
-    infoMessage: 'Jakieś info',
+    infoMessage: '',
 
     // user state
     isUserLoggedIn: false,
@@ -116,6 +117,8 @@ export class App extends React.Component {
           color={'primary'}
         >TEXT
         </Button>
+
+        <TextField placeholder={'E-mail'}/>
       </div>
     )
   }
