@@ -1,4 +1,5 @@
 import React from 'react'
+
 import FullPageLoader from './components/FullPageLoader'
 import FullPageMessage from './components/FullPageMessage'
 
@@ -8,6 +9,8 @@ import Message from './components/Message'
 import LoginForm from './components/LoginForm'
 import CreateAccountForm from './components/CreateAccountForm'
 import RecoverPasswordForm from './components/RecoverPasswordForm'
+
+import { signIn } from './auth'
 
 export class App extends React.Component {
   state = {
@@ -45,6 +48,27 @@ export class App extends React.Component {
     searchPhrase: ''
   }
 
+  onClickLogin = async () => {
+    this.setState(() => ({ isLoading: true }))
+    try {
+      await signIn(this.state.loginEmail, this.state.loginPassword)
+    } catch (error) {
+      this.setState(() => ({
+        hasError: true,
+        errorMessage: error.data.error.message
+      }))
+    } finally {
+      this.setState(() => ({ isLoading: false }))
+    }
+  }
+
+  dismissError = () => {
+    this.setState(() => ({
+      hasError: false,
+      errorMessage: ''
+    }))
+  }
+
   render () {
     const {
       notLoginUserRoute,
@@ -66,7 +90,7 @@ export class App extends React.Component {
           notLoginUserRoute === 'LOGIN' ?
             <FullPageLayout>
               <LoginForm
-                onClickLogin={() => { console.log('onClickLogin') }}
+                onClickLogin={this.onClickLogin}
                 onClickCreateAccount={() => this.setState(() => ({ notLoginUserRoute: 'CREATE-ACCOUNT' }))}
                 onClickForgotPassword={() => this.setState(() => ({ notLoginUserRoute: 'FORGOT-PASSWORD' }))}
                 email={loginEmail}
@@ -113,7 +137,7 @@ export class App extends React.Component {
                 }}
                 iconVariant={'error'}
                 message={errorMessage}
-                onButtonClick={() => console.log('a')}
+                onButtonClick={this.dismissError}
               />
             :
             isInfoDisplayed
@@ -124,7 +148,7 @@ export class App extends React.Component {
                   <Message
                     iconVariant={'info'}
                     message={infoMessage}
-                    onButtonClick={() => console.log('a')}
+                    onButtonClick={this.dismissError}
                   />
                 </FullPageLayout> :
               isLoading ?
