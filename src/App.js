@@ -49,14 +49,24 @@ export class App extends React.Component {
       errorMessage,
       infoMessage,
       isInfoDisplayed,
-      isLoading
+      isLoading,
+      loginEmail,
+      loginPassword
     } = this.state
     return (
       <div>
         {
           notLoginUserRoute === 'LOGIN' ?
             <FullPageLayout>
-              <LoginForm/>
+              <LoginForm
+                onClickLogin={() => { console.log('onClickLogin') }}
+                onClickCreateAccount={() => { console.log('onClickCreateAccount') }}
+                onClickForgotPassword={() => { console.log('onClickForgotPassword') }}
+                email={loginEmail}
+                password={loginPassword}
+                onChangeEmail={(e) => this.setState(() => ({ loginEmail: e.target.value }))}
+                onChangePassword={(e) => this.setState(() => ({ loginPassword: e.target.value }))}
+              />
             </FullPageLayout> :
             null}
         {

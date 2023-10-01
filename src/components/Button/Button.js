@@ -16,7 +16,6 @@ export const Button = (props) => {
 
   const variantClass = classes[variant]
   const colorClass = classes[color]
-  console.log(colorClass)
 
   return (
     <button

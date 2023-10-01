@@ -11,6 +11,13 @@ import classes from './styles.module.css'
 export const LoginForm = (props) => {
   const {
     className,
+    onClickLogin,
+    onClickCreateAccount,
+    onClickForgotPassword,
+    email,
+    password,
+    onChangePassword,
+    onChangeEmail,
     ...otherProps
   } = props
 
@@ -26,26 +33,34 @@ export const LoginForm = (props) => {
       >Log in 👋
       </Typography>
       <TextField
+        value={email}
+        onChange={onChangeEmail}
         className={classes.textField}
         placeholder={'E-mail'}
       />
       <TextField
+        type={'password'}
+        value={password}
+        onChange={onChangePassword}
         className={classes.textField}
         placeholder={'Password'}
       />
       <Button
+        onClick={onClickLogin}
         className={classes.button}
         variant={'contained'}
         color={'primary'}
       >LOGIN
       </Button>
       <Button
+        onClick={onClickCreateAccount}
         className={classes.button}
         variant={'contained'}
         color={'secondary'}
       >CREATE ACCOUNT
       </Button>
       <Button
+        onClick={onClickForgotPassword}
         className={classes.button}
         variant={'text'}
         color={'primary'}
@@ -56,7 +71,14 @@ export const LoginForm = (props) => {
 }
 
 LoginForm.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  onClickLogin: PropTypes.func.isRequired,
+  onClickCreateAccount: PropTypes.func.isRequired,
+  onClickForgotPassword: PropTypes.func.isRequired,
+  email: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  onChangeEmail: PropTypes.func.isRequired,
+  onChangePassword: PropTypes.func.isRequired
 }
 
 export default LoginForm
