@@ -8,10 +8,10 @@ export class App extends React.Component {
   state = {
     // global state
     isLoading: false,
-    hasError: true,
-    errorMessage: '',
+    hasError: false,
+    errorMessage: 'Jest błąd',
     isInfoDisplayed: true,
-    infoMessage: '',
+    infoMessage: 'Jakieś info',
 
     // user state
     isUserLoggedIn: false,
@@ -40,15 +40,21 @@ export class App extends React.Component {
   }
 
   render () {
-    const { isInfoDisplayed, isLoading } = this.state
+    const { hasError, errorMessage, infoMessage, isInfoDisplayed, isLoading } = this.state
     return (
       <div>
         <h1>APP</h1>
-        {
+        {hasError
+          ? <FullPageMessage
+              iconVariant={'error'}
+              message={errorMessage}
+              onButtonClick={() => console.log('a')}
+            /> :
           isInfoDisplayed
             ? <FullPageMessage
                 iconVariant={'info'}
-                message={'INFO'}
+                message={infoMessage}
+                onButtonClick={() => console.log('a')}
               /> :
             isLoading ?
               <FullPageLoader/>
