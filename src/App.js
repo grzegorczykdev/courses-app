@@ -5,7 +5,8 @@ import FullPageMessage from './components/FullPageMessage'
 import FullPageLayout from './components/FullPageLayout'
 import Message from './components/Message'
 
-import LoginForm from './components/LoginForm/LoginForm'
+import LoginForm from './components/LoginForm'
+import CreateAccountForm from './components/CreateAccountForm'
 
 export class App extends React.Component {
   state = {
@@ -23,11 +24,12 @@ export class App extends React.Component {
     userAvatar: '',
 
     // router state
-    notLoginUserRoute: 'LOGIN', // 'NEW-ACCOUNT', 'FORGOT_PASSWORD'
+    notLoginUserRoute: 'CREATE-ACCOUNT', // 'CREATE-ACCOUNT', 'FORGOT-PASSWORD'
 
     // login page state
     loginEmail: '',
     loginPassword: '',
+    loginRepeatPassword: '',
 
     // create account page
     createAccountEmail: '',
@@ -51,7 +53,10 @@ export class App extends React.Component {
       isInfoDisplayed,
       isLoading,
       loginEmail,
-      loginPassword
+      loginPassword,
+      createAccountEmail,
+      createAccountPassword,
+      createAccountRepeatPassword
     } = this.state
     return (
       <div>
@@ -67,8 +72,21 @@ export class App extends React.Component {
                 onChangeEmail={(e) => this.setState(() => ({ loginEmail: e.target.value }))}
                 onChangePassword={(e) => this.setState(() => ({ loginPassword: e.target.value }))}
               />
-            </FullPageLayout> :
-            null}
+            </FullPageLayout>
+            : notLoginUserRoute === 'CREATE-ACCOUNT' ?
+              <FullPageLayout>
+                <CreateAccountForm
+                  createAccountEmail={createAccountEmail}
+                  createAccountPassword={createAccountPassword}
+                  createAccountRepeatPassword={createAccountRepeatPassword}
+                  onChangeEmail={(e) => this.setState(() => ({ createAccountEmail: e.target.value }))}
+                  onChangePassword={(e) => this.setState(() => ({ createAccountPassword: e.target.value }))}
+                  onChangeRepeatPassword={(e) => this.setState(() => ({ createAccountRepeatPassword: e.target.value }))}
+                  onClickCreateAccount={() => { console.log('onClickCreateAccount') }}
+                  onClickBackToLogin={() => { console.log('onClickBackToLogin') }}
+                />
+              </FullPageLayout> :
+              null}
         {
           /*
           Dwa podejścia w wyświetlaniu komponentów
