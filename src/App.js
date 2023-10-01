@@ -1,12 +1,11 @@
 import React from 'react'
 import FullPageLoader from './components/FullPageLoader'
-import Typography from './components/Typography'
-import Button from './components/Button'
 import FullPageMessage from './components/FullPageMessage'
-import TextField from './components/TextField'
 
 import FullPageLayout from './components/FullPageLayout'
 import Message from './components/Message'
+
+import LoginForm from './components/LoginForm/LoginForm'
 
 export class App extends React.Component {
   state = {
@@ -24,7 +23,7 @@ export class App extends React.Component {
     userAvatar: '',
 
     // router state
-    notLoginUserRoute: 'LOGIN', // 'NEW-ACCOUNT', 'FORGOT PASSWORD'
+    notLoginUserRoute: 'LOGIN', // 'NEW-ACCOUNT', 'FORGOT_PASSWORD'
 
     // login page state
     loginEmail: '',
@@ -44,10 +43,20 @@ export class App extends React.Component {
   }
 
   render () {
-    const { hasError, errorMessage, infoMessage, isInfoDisplayed, isLoading } = this.state
+    const {
+      notLoginUserRoute,
+      hasError,
+      errorMessage,
+      infoMessage,
+      isInfoDisplayed,
+      isLoading
+    } = this.state
     return (
       <div>
-        <h1>APP</h1>
+        {
+          notLoginUserRoute === 'LOGIN' ?
+            <LoginForm/> :
+            null}
         {
           /*
           Dwa podejścia w wyświetlaniu komponentów
@@ -81,44 +90,6 @@ export class App extends React.Component {
                 <FullPageLoader/>
                 : null
         }
-        <Typography
-          variant={'h1'}
-        >
-          Header 1
-        </Typography>
-        <br/>
-        <Typography
-          variant={'h3'}
-        >
-          Header 3
-        </Typography>
-        <br/>
-        <Typography
-          variant={'button'}
-        >
-        </Typography>
-
-        <Button
-          variant={'contained'}
-          color={'primary'}
-        >CONTAINED PRIMARY
-        </Button>
-        <br/>
-
-        <Button
-          variant={'contained'}
-          color={'secondary'}
-        >CONTAINED SECONDARY
-        </Button>
-        <br/>
-
-        <Button
-          variant={'text'}
-          color={'primary'}
-        >TEXT
-        </Button>
-
-        <TextField placeholder={'E-mail'}/>
       </div>
     )
   }
