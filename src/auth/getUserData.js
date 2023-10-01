@@ -7,7 +7,7 @@ const GET_USER_DATA_URL = 'https://identitytoolkit.googleapis.com/v1/accounts:lo
 export const getUserData = () => {
   const token = getIdToken()
 
-  if (!token) return Promise.reject('No token found')
+  if (!token) return Promise.reject(new Error('No token found'))
 
   return makeRequest(
     GET_USER_DATA_URL,

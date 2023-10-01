@@ -8,7 +8,7 @@ const REFRESH_TOKEN_URL = 'https://securetoken.googleapis.com/v1/token?key=' + F
 export const refreshTokens = () => {
   const refreshToken = getRefreshToken()
 
-  if (!refreshToken) return Promise.reject('No refresh token found')
+  if (!refreshToken) return Promise.reject(new Error('No refresh token found'))
 
   return makeRequest(
     REFRESH_TOKEN_URL,

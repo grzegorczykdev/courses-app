@@ -5,7 +5,7 @@ import { refreshTokens } from './refreshTokens'
 export const makeAuthorizedRequest = (url, options) => {
   const token = getIdToken()
 
-  if (!token) return Promise.reject('No token found')
+  if (!token) return Promise.reject(new Error('No token found'))
 
   const containsQuestionMark = url.indexOf('?') !== -1
 
@@ -13,7 +13,7 @@ export const makeAuthorizedRequest = (url, options) => {
 
   return makeRequest(urlWithToken, options)
     .catch((error) => {
-      const { data, code } = error
+      const { code } = error
       if (code === 401) {
         return refreshTokens()
           .then(() => {

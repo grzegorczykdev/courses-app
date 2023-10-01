@@ -7,7 +7,7 @@ const UPDATE_USER_URL = 'https://identitytoolkit.googleapis.com/v1/accounts:upda
 export const updateUser = (displayName, photoUrl) => {
   const token = getIdToken()
 
-  if (!token) return Promise.reject('No token found')
+  if (!token) return Promise.reject(new Error('No token found'))
 
   const deleteAttribute = (
     displayName && photoUrl ?
