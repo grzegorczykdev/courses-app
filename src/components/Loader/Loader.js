@@ -5,19 +5,12 @@ import Spinner from './Spinner'
 import classes from './styles.module.css'
 
 export const FullPageLoader = (props) => {
-  const {
-    className,
-    ...otherProps
-  } = props
   return (
-    <div
-      className={`${classes.root}${className ? ` ${className}` : ''}`}
-      {...otherProps}
-    >
-      <Spinner
-        className={classes.spinner}
-      />
-    </div>
+
+    <Spinner
+      className={classes.spinner}
+    />
+
   )
 }
 

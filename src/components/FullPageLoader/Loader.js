@@ -1,25 +1,24 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import FullPageLayout from '../FullPageLayout'
-import Message from '../Message'
+import Loader from '../Loader'
 
-export const FullPageMessage = (props) => {
+export const FullPageLoader = (props) => {
   const {
     wrapperProps,
     ...otherProps
   } = props
   return (
     <FullPageLayout {...wrapperProps}>
-      <Message
+      <Loader
         {...otherProps}
-      >
-      </Message>
+      />
     </FullPageLayout>
   )
 }
 
-FullPageMessage.propTypes = {
+FullPageLoader.propTypes = {
   wrapperProps: PropTypes.object
 }
 
-export default FullPageMessage
+export default FullPageLoader

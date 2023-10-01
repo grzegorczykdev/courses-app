@@ -4,13 +4,16 @@ import Typography from './components/Typography'
 import Button from './components/Button'
 import FullPageMessage from './components/FullPageMessage'
 
+import FullPageLayout from './components/FullPageLayout'
+import Message from './components/Message'
+
 export class App extends React.Component {
   state = {
     // global state
-    isLoading: false,
-    hasError: false,
+    isLoading: true,
+    hasError: true,
     errorMessage: 'Jest błąd',
-    isInfoDisplayed: true,
+    isInfoDisplayed: false,
     infoMessage: 'Jakieś info',
 
     // user state
@@ -44,21 +47,38 @@ export class App extends React.Component {
     return (
       <div>
         <h1>APP</h1>
-        {hasError
-          ? <FullPageMessage
-              iconVariant={'error'}
-              message={errorMessage}
-              onButtonClick={() => console.log('a')}
-            /> :
-          isInfoDisplayed
+        {
+          /*
+          Dwa podejścia w wyświetlaniu komponentów
+          Error - Komponent spomponowany w FullPageMessage - koniecznosć tworzenia nowego obiektu z propsami dla wrappera
+          Info - Komponent tworzony w tym miejscu - przekazywane osobne propsy
+          */
+        }
+        {
+          hasError
             ? <FullPageMessage
-                iconVariant={'info'}
-                message={infoMessage}
+                wrapperProps={{
+                  className: 'wrapper-class'
+                }}
+                iconVariant={'error'}
+                message={errorMessage}
                 onButtonClick={() => console.log('a')}
-              /> :
-            isLoading ?
-              <FullPageLoader/>
-              : null
+              />
+            :
+            isInfoDisplayed
+              ?
+                <FullPageLayout
+                  className= {'wrapper-class'}
+                >
+                  <Message
+                    iconVariant={'info'}
+                    message={infoMessage}
+                    onButtonClick={() => console.log('a')}
+                  />
+                </FullPageLayout> :
+              isLoading ?
+                <FullPageLoader/>
+                : null
         }
         <Typography
           variant={'h1'}
