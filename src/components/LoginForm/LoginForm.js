@@ -11,13 +11,14 @@ import classes from './styles.module.css'
 export const LoginForm = (props) => {
   const {
     className,
-    onClickLogin,
+    email,
+    emailError,
+    onChangeEmail,
+    onChangePassword,
     onClickCreateAccount,
     onClickForgotPassword,
-    email,
+    onClickLogin,
     password,
-    onChangePassword,
-    onChangeEmail,
     ...otherProps
   } = props
 
@@ -33,6 +34,7 @@ export const LoginForm = (props) => {
       >Log in 👋
       </Typography>
       <TextField
+        errorMessage={emailError}
         value={email}
         onChange={onChangeEmail}
         className={classes.textField}
@@ -72,13 +74,14 @@ export const LoginForm = (props) => {
 
 LoginForm.propTypes = {
   className: PropTypes.string,
-  onClickLogin: PropTypes.func.isRequired,
+  email: PropTypes.string.isRequired,
+  emailError: PropTypes.string,
+  onChangeEmail: PropTypes.func.isRequired,
+  onChangePassword: PropTypes.func.isRequired,
   onClickCreateAccount: PropTypes.func.isRequired,
   onClickForgotPassword: PropTypes.func.isRequired,
-  email: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-  onChangeEmail: PropTypes.func.isRequired,
-  onChangePassword: PropTypes.func.isRequired
+  onClickLogin: PropTypes.func.isRequired,
+  password: PropTypes.string.isRequired
 }
 
 export default LoginForm
