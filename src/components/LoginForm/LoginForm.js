@@ -19,6 +19,7 @@ export const LoginForm = (props) => {
     onClickForgotPassword,
     onClickLogin,
     password,
+    passwordError,
     ...otherProps
   } = props
 
@@ -34,18 +35,19 @@ export const LoginForm = (props) => {
       >Log in 👋
       </Typography>
       <TextField
-        errorMessage={emailError}
-        value={email}
-        onChange={onChangeEmail}
         className={classes.textField}
+        errorMessage={emailError}
+        onChange={onChangeEmail}
         placeholder={'E-mail'}
+        value={email}
       />
       <TextField
+        className={classes.textField}
+        errorMessage={passwordError}
+        onChange={onChangePassword}
+        placeholder={'Password'}
         type={'password'}
         value={password}
-        onChange={onChangePassword}
-        className={classes.textField}
-        placeholder={'Password'}
       />
       <Button
         onClick={onClickLogin}
@@ -81,7 +83,8 @@ LoginForm.propTypes = {
   onClickCreateAccount: PropTypes.func.isRequired,
   onClickForgotPassword: PropTypes.func.isRequired,
   onClickLogin: PropTypes.func.isRequired,
-  password: PropTypes.string.isRequired
+  password: PropTypes.string.isRequired,
+  passwordError: PropTypes.string
 }
 
 export default LoginForm
