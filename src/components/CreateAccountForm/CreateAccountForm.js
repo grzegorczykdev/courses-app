@@ -11,6 +11,9 @@ import classes from './styles.module.css'
 export const CreateAccountForm = (props) => {
   const {
     className,
+    createAccountEmailError,
+    createAccountPasswordError,
+    createAccountRepeatPasswordError,
     onClickCreateAccount,
     onClickBackToLogin,
     createAccountEmail,
@@ -34,12 +37,14 @@ export const CreateAccountForm = (props) => {
       >Create new account
       </Typography>
       <TextField
+        errorMessage={createAccountEmailError}
         value={createAccountEmail}
         onChange={onChangeEmail}
         className={classes.textField}
         placeholder={'E-mail'}
       />
       <TextField
+        errorMessage={createAccountPasswordError}
         type={'password'}
         value={createAccountPassword}
         onChange={onChangePassword}
@@ -47,6 +52,7 @@ export const CreateAccountForm = (props) => {
         placeholder={'Password'}
       />
       <TextField
+        errorMessage={createAccountRepeatPasswordError}
         type={'password'}
         value={createAccountRepeatPassword}
         onChange={onChangeRepeatPassword}
@@ -80,7 +86,10 @@ CreateAccountForm.propTypes = {
   createAccountRepeatPassword: PropTypes.string.isRequired,
   onChangeEmail: PropTypes.func.isRequired,
   onChangePassword: PropTypes.func.isRequired,
-  onChangeRepeatPassword: PropTypes.func.isRequired
+  onChangeRepeatPassword: PropTypes.func.isRequired,
+  createAccountEmailError: PropTypes.string,
+  createAccountPasswordError: PropTypes.string,
+  createAccountRepeatPasswordError: PropTypes.string
 }
 
 export default CreateAccountForm

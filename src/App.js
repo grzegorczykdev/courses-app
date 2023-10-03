@@ -14,6 +14,10 @@ import RecoverPasswordForm from './components/RecoverPasswordForm'
 
 import { signIn } from './auth'
 
+const EMAIL_VALIDATION_ERROR = 'Please type a valid e-mail!'
+const PASSWORD_VALIDATION_ERROR = 'Password must have at least 6 chars!'
+const REPEAT_PASSWORD_VALIDATION_ERROR = 'Passwords must be the same!'
+
 export class App extends React.Component {
   state = {
     // global state
@@ -34,18 +38,24 @@ export class App extends React.Component {
 
     // login page state
     loginEmail: '',
-    loginEmailError: '',
+    loginEmailError: EMAIL_VALIDATION_ERROR,
     loginPassword: '',
-    loginPasswordError: '',
+    loginPasswordError: PASSWORD_VALIDATION_ERROR,
     loginSubmitted: false,
 
     // create account page
     createAccountEmail: '',
+    createAccountEmailError: EMAIL_VALIDATION_ERROR,
     createAccountPassword: '',
+    createAccountPasswordError: PASSWORD_VALIDATION_ERROR,
     createAccountRepeatPassword: '',
+    createAccountRepeatPasswordError: REPEAT_PASSWORD_VALIDATION_ERROR,
+    createAccountSubmitted: false,
 
     // recover password page
     recoverPasswordEmail: '',
+    recoverPasswordEmailError: EMAIL_VALIDATION_ERROR,
+    recoverPasswordSubmitted: false,
 
     // course list page
     courses: null,
@@ -75,14 +85,14 @@ export class App extends React.Component {
   onChangeLoginEmailHandler = (e) => {
     this.setState(() => ({
       loginEmail: e.target.value,
-      loginEmailError: isEmail(e.target.value) ? '' : 'Please enter a valid email address'
+      loginEmailError: isEmail(e.target.value) ? '' : EMAIL_VALIDATION_ERROR
     }))
   }
 
   onChangeLoginPasswordHandler = (e) => {
     this.setState(() => ({
       loginPassword: e.target.value,
-      loginPasswordError: e.target.value.length >= 6 ? '' : 'Password must contain at least 6 characters'
+      loginPasswordError: e.target.value.length >= 6 ? '' : PASSWORD_VALIDATION_ERROR
     }))
   }
 
@@ -91,22 +101,46 @@ export class App extends React.Component {
   onClickLoginForgotPasswordHandler = () => this.setState(() => ({ notLoginUserRoute: 'FORGOT-PASSWORD' }))
 
   // Create account
-  onChangeCAEmailHandler = (e) => this.setState(() => ({ createAccountEmail: e.target.value }))
+  onChangeCAEmailHandler = (e) => this.setState(() => ({
+    createAccountEmail: e.target.value,
+    createAccountEmailError: isEmail(e.target.value) ? '' : EMAIL_VALIDATION_ERROR
+  }))
 
-  onChangeCACreateAccountPasswordHandler = (e) => this.setState(() => ({ createAccountPassword: e.target.value }))
+  onChangeCACreateAccountPasswordHandler = (e) => this.setState(() => ({
+    createAccountPassword: e.target.value,
+    createAccountPasswordError: e.target.value.length >= 6 ? '' : PASSWORD_VALIDATION_ERROR
+  }))
 
-  onChangeCARepeatPasswordHandler = (e) => this.setState(() => ({ createAccountRepeatPassword: e.target.value }))
+  onChangeCARepeatPasswordHandler = (e) => {
+    console.log(this.state.createAccountPassword)
+    console.log(e.target.value)
+    this.setState(() => ({
+      createAccountRepeatPassword: e.target.value,
+      createAccountRepeatPasswordError: e.target.value === this.state.createAccountPassword ? '' : REPEAT_PASSWORD_VALIDATION_ERROR
+    }))
+  }
 
-  onClickCACreateAccountHandler = () => { console.log('onClickCreateAccount') }
+  onClickCACreateAccountHandler = () => {
+    this.setState(() => ({
+      createAccountSubmitted: true
+    }))
+  }
 
   onClickCABackToLoginHandler = () => this.setState(() => ({ notLoginUserRoute: 'LOGIN' }))
 
   // Forgot password
-  onChangeResetEmailHandler = (e) => this.setState(() => ({ recoverPasswordEmail: e.target.value }))
+  onChangeResetEmailHandler = (e) => this.setState(() => ({
+    recoverPasswordEmail: e.target.value,
+    recoverPasswordEmailError: e.target.value.length >= 6 ? '' : PASSWORD_VALIDATION_ERROR
+  }))
 
   onClickResetBackToLoginHandler = () => this.setState(() => ({ notLoginUserRoute: 'LOGIN' }))
 
-  onClickResetRecoverPasswordHandler = () => { console.log('onClickRecoverPassword') }
+  onClickResetRecoverPasswordHandler = () => {
+    this.setState(() => ({
+      recoverPasswordSubmitted: true
+    }))
+  }
 
   // Other
   dismissError = () => {
@@ -119,8 +153,12 @@ export class App extends React.Component {
   render () {
     const {
       createAccountEmail,
+      createAccountEmailError,
       createAccountPassword,
+      createAccountPasswordError,
       createAccountRepeatPassword,
+      createAccountRepeatPasswordError,
+      createAccountSubmitted,
       errorMessage,
       hasError,
       infoMessage,
@@ -132,7 +170,9 @@ export class App extends React.Component {
       loginPasswordError,
       loginSubmitted,
       notLoginUserRoute,
-      recoverPasswordEmail
+      recoverPasswordEmail,
+      recoverPasswordEmailError,
+      recoverPasswordSubmitted
     } = this.state
     return (
       <div>
@@ -155,8 +195,11 @@ export class App extends React.Component {
               <FullPageLayout>
                 <CreateAccountForm
                   createAccountEmail={createAccountEmail}
+                  createAccountEmailError={createAccountSubmitted ? createAccountEmailError : undefined}
                   createAccountPassword={createAccountPassword}
+                  createAccountPasswordError={createAccountSubmitted ? createAccountPasswordError : undefined}
                   createAccountRepeatPassword={createAccountRepeatPassword}
+                  createAccountRepeatPasswordError={createAccountSubmitted ? createAccountRepeatPasswordError : undefined}
                   onChangeEmail={this.onChangeCAEmailHandler}
                   onChangePassword={this.onChangeCACreateAccountPasswordHandler}
                   onChangeRepeatPassword={this.onChangeCARepeatPasswordHandler}
@@ -168,6 +211,7 @@ export class App extends React.Component {
                 <FullPageLayout>
                   <RecoverPasswordForm
                     recoverPasswordEmail={recoverPasswordEmail}
+                    recoverPasswordEmailError={recoverPasswordSubmitted ? recoverPasswordEmailError : undefined}
                     onChangeEmail={this.onChangeResetEmailHandler}
                     onClickBackToLogin={this.onClickResetBackToLoginHandler}
                     onClickRecoverPassword={this.onClickResetRecoverPasswordHandler}
