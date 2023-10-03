@@ -12,7 +12,7 @@ import LoginForm from './components/LoginForm'
 import CreateAccountForm from './components/CreateAccountForm'
 import RecoverPasswordForm from './components/RecoverPasswordForm'
 
-import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn } from './auth'
+import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail } from './auth'
 
 const EMAIL_VALIDATION_ERROR = 'Please type a valid e-mail!'
 const PASSWORD_VALIDATION_ERROR = 'Password must have at least 6 chars!'
@@ -163,10 +163,26 @@ export class App extends React.Component {
 
   onClickResetBackToLoginHandler = () => this.setState(() => ({ notLoginUserRoute: 'LOGIN' }))
 
-  onClickResetRecoverPasswordHandler = () => {
-    this.setState(() => ({
-      recoverPasswordSubmitted: true
-    }))
+  onClickResetRecoverPasswordHandler = async () => {
+    this.setState(() => ({ recoverPasswordSubmitted: true }))
+
+    if (this.state.recoverPasswordEmailError) return
+
+    this.setState(() => ({ isLoading: true }))
+    try {
+      await sendPasswordResetEmail(this.state.recoverPasswordEmail)
+      this.setState(() => ({
+        isInfoDisplayed: true,
+        infoMessage: 'Check your inbox'
+      }))
+    } catch (error) {
+      this.setState(() => ({
+        hasError: true,
+        errorMessage: error.data.error.message
+      }))
+    } finally {
+      this.setState(() => ({ isLoading: false }))
+    }
   }
 
   // Other
