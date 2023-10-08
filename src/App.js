@@ -12,6 +12,10 @@ import LoginForm from './components/LoginForm'
 import CreateAccountForm from './components/CreateAccountForm'
 import RecoverPasswordForm from './components/RecoverPasswordForm'
 
+import AppBar from './components/AppBar'
+import Logo from './components/Logo'
+import UserDropdown from './components/UserDropdown'
+
 import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail } from './auth'
 
 const EMAIL_VALIDATION_ERROR = 'Please type a valid e-mail!'
@@ -242,7 +246,14 @@ export class App extends React.Component {
       <div>
         {
           isUserLoggedIn
-            ? 'Logged in' :
+            ?
+              <div>
+                <AppBar>
+                  <Logo/>
+                  <UserDropdown/>
+                </AppBar>
+              </div>
+            :
             notLoginUserRoute === 'LOGIN' ?
               <FullPageLayout>
                 <LoginForm
