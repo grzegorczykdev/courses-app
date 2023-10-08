@@ -7,6 +7,7 @@ import Typography from '../Typography'
 
 export const UserDropdown = (props) => {
   const {
+    contentList,
     className,
     userDisplayName,
     userEmail,
@@ -40,11 +41,19 @@ export const UserDropdown = (props) => {
           />
         </div>
       </div>
+      {
+        contentList ?
+          <div className={classes.listContainer}>
+            {contentList}
+          </div>
+          : null
+        }
     </div>
   )
 }
 
 UserDropdown.propTypes = {
+  contentList: PropTypes.node,
   className: PropTypes.string,
   userDisplayName: PropTypes.string,
   userEmail: PropTypes.string.isRequired,
