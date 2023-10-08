@@ -38,7 +38,7 @@ ListItem.propTypes = {
   className: PropTypes.string,
   text: PropTypes.string,
   icon: PropTypes.oneOf(['log-out', 'profile']),
-  disabled: PropTypes.bool.isRequired
+  disabled: PropTypes.bool
 }
 
 export default ListItem

@@ -17,7 +17,8 @@ import Logo from './components/Logo'
 import UserDropdown from './components/UserDropdown'
 import ListItem from './components/ListItem'
 
-import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail } from './auth'
+import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
+import { getAll as getAllCourses } from './api/courses'
 
 import classes from './styles.module.css'
 import List from './components/List/List'
@@ -42,7 +43,7 @@ export class App extends React.Component {
     userAvatar: '',
 
     // user dropdown
-    isUserDropdownOpen: true,
+    isUserDropdownOpen: false,
 
     // router state
     notLoginUserRoute: 'LOGIN', // 'LOGIN, 'CREATE-ACCOUNT', 'FORGOT-PASSWORD'
@@ -207,8 +208,29 @@ export class App extends React.Component {
     console.log('2')
   }
 
-  onUserDropdownLogOutClick = () => {
-    console.log('1')
+  onUserDropdownLogOutClick = async () => {
+    this.setState(() => ({ isLoading: true }))
+    try {
+      await logOut()
+      this.setState(() => ({
+        isUserLoggedIn: false,
+        userDisplayName: '',
+        userEmail: '',
+        userAvatar: ''
+      }))
+    } catch (error) {
+      this.setState(() => ({
+        hasError: true,
+        errorMessage: error.data.error.message
+      }))
+    } finally {
+      this.setState(() => ({ isLoading: false }))
+    }
+  }
+
+  fetchCourses = async () => {
+    const courses = await getAllCourses()
+    console.log(courses)
   }
 
   // Other
@@ -221,8 +243,12 @@ export class App extends React.Component {
       isUserLoggedIn: true,
       userDisplayName: '',
       userEmail: user.email,
-      userAvatar: ''
+      userAvatar: '',
+      loginEmail: '',
+      loginPassword: ''
     }))
+
+    this.fetchCourses()
   }
 
   dismissError = () => {
