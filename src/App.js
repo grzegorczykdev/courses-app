@@ -18,6 +18,8 @@ import UserDropdown from './components/UserDropdown'
 
 import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail } from './auth'
 
+import classes from './styles.module.css'
+
 const EMAIL_VALIDATION_ERROR = 'Please type a valid e-mail!'
 const PASSWORD_VALIDATION_ERROR = 'Password must have at least 6 chars!'
 const REPEAT_PASSWORD_VALIDATION_ERROR = 'Passwords must be the same!'
@@ -249,7 +251,7 @@ export class App extends React.Component {
             ?
               <div>
                 <AppBar>
-                  <Logo/>
+                  <Logo className={classes.logo}/>
                   <UserDropdown/>
                 </AppBar>
               </div>
