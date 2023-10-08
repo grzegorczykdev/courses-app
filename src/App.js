@@ -15,10 +15,12 @@ import RecoverPasswordForm from './components/RecoverPasswordForm'
 import AppBar from './components/AppBar'
 import Logo from './components/Logo'
 import UserDropdown from './components/UserDropdown'
+import ListItem from './components/ListItem'
 
 import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail } from './auth'
 
 import classes from './styles.module.css'
+import List from './components/List/List'
 
 const EMAIL_VALIDATION_ERROR = 'Please type a valid e-mail!'
 const PASSWORD_VALIDATION_ERROR = 'Password must have at least 6 chars!'
@@ -38,6 +40,9 @@ export class App extends React.Component {
     userDisplayName: '',
     userEmail: '',
     userAvatar: '',
+
+    // user dropdown
+    isUserDropdownOpen: true,
 
     // router state
     notLoginUserRoute: 'LOGIN', // 'LOGIN, 'CREATE-ACCOUNT', 'FORGOT-PASSWORD'
@@ -191,6 +196,21 @@ export class App extends React.Component {
     }
   }
 
+  // User dropdown
+  onUserDropdownClick = () => {
+    this.setState((prevState) => ({
+      isUserDropdownOpen: !prevState.isUserDropdownOpen
+    }))
+  }
+
+  onUserDropdownProfileClick = () => {
+    console.log('2')
+  }
+
+  onUserDropdownLogOutClick = () => {
+    console.log('1')
+  }
+
   // Other
   onUserLogged = () => {
     const token = getIdToken()
@@ -245,7 +265,8 @@ export class App extends React.Component {
       recoverPasswordSubmitted,
       userDisplayName,
       userEmail,
-      userAvatar
+      userAvatar,
+      isUserDropdownOpen
     } = this.state
     return (
       <div>
@@ -260,7 +281,22 @@ export class App extends React.Component {
                     userEmail={userEmail}
                     userAvatar={userAvatar}
                     className={classes.userDropdown}
-                    contentList={'aaaa'}
+                    contentList={isUserDropdownOpen ?
+                      <List>
+                        <ListItem
+                          icon={'profile'}
+                          text={'Profile'}
+                          disabled={true}
+                          onClick={this.onUserDropdownProfileClick}
+                        />
+                        <ListItem
+                          icon={'log-out'}
+                          text={'Log out'}
+                          onClick={this.onUserDropdownLogOutClick}
+                        />
+                      </List>
+                      : null}
+                    onClick={this.onUserDropdownClick}
                   />
                 </AppBar>
               </div>
