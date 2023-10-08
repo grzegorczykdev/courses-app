@@ -19,24 +19,26 @@ export const UserDropdown = (props) => {
       className={`${classes.root}${className ? ` ${className}` : ''}`}
       {...otherProps}
     >
-      <div className={classes.textWrapper}>
-        <Typography
-          variant={'body1'}
-          className={classes.userDisplayName}
-        >
-          {userDisplayName || '- -'}
-        </Typography>
-        <Typography
-          variant={'caption'}
-          className={classes.userEmail}
-        >
-          {userEmail}
-        </Typography>
-      </div>
-      <div className={classes.avatarWrapper}>
-        <Avatar
-          src={userAvatar}
-        />
+      <div className={classes.wrapper}>
+        <div className={classes.textWrapper}>
+          <Typography
+            variant={'body1'}
+            className={classes.userDisplayName}
+          >
+            {userDisplayName || '- -'}
+          </Typography>
+          <Typography
+            variant={'caption'}
+            className={classes.userEmail}
+          >
+            {userEmail}
+          </Typography>
+        </div>
+        <div className={classes.avatarWrapper}>
+          <Avatar
+            src={userAvatar}
+          />
+        </div>
       </div>
     </div>
   )

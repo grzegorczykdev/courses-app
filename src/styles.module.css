@@ -11,4 +11,8 @@
     width: 220px;
   }
 
+  .userDropdown {
+    width: fit-content;
+  }
+
 }
