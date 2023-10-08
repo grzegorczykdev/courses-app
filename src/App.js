@@ -242,7 +242,10 @@ export class App extends React.Component {
       notLoginUserRoute,
       recoverPasswordEmail,
       recoverPasswordEmailError,
-      recoverPasswordSubmitted
+      recoverPasswordSubmitted,
+      userDisplayName,
+      userEmail,
+      userAvatar
     } = this.state
     return (
       <div>
@@ -252,7 +255,12 @@ export class App extends React.Component {
               <div>
                 <AppBar>
                   <Logo className={classes.logo}/>
-                  <UserDropdown/>
+                  <UserDropdown
+                    userDisplayName={userDisplayName}
+                    userEmail={userEmail}
+                    userAvatar={userAvatar}
+                    className={classes.userDropdown}
+                  />
                 </AppBar>
               </div>
             :
