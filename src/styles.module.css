@@ -1,5 +1,5 @@
 .userDropdown {
-  width: 220px;
+  width: calc(100% - 154px);
 }
 
 .logo {
@@ -10,4 +10,5 @@
   .logo {
     width: 220px;
   }
+
 }

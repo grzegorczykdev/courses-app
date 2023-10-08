@@ -20,10 +20,16 @@ export const UserDropdown = (props) => {
       {...otherProps}
     >
       <div className={classes.textWrapper}>
-        <Typography>
+        <Typography
+          variant={'body1'}
+          className={classes.userDisplayName}
+        >
           {userDisplayName || '- -'}
         </Typography>
-        <Typography>
+        <Typography
+          variant={'caption'}
+          className={classes.userEmail}
+        >
           {userEmail}
         </Typography>
       </div>

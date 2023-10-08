@@ -9,8 +9,23 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: calc(100% - 51px);
 }
 
 .avatarWrapper {
   margin-left: 10px;
+}
+
+.userDisplayName {
+  color: rgba(0, 0, 0, 0.87);
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userEmail {
+  color: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
