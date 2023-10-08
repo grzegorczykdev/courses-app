@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import classes from './styles.module.css'
-import Placeholder from './Placeholder'
+import Avatar from '../Avatar'
 import Typography from '../Typography'
 
 export const UserDropdown = (props) => {
@@ -28,7 +28,9 @@ export const UserDropdown = (props) => {
         </Typography>
       </div>
       <div className={classes.avatarWrapper}>
-        <Placeholder/>
+        <Avatar
+          src={userAvatar}
+        />
       </div>
     </div>
   )
