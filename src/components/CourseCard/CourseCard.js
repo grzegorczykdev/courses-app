@@ -14,7 +14,7 @@ export const CourseCard = (props) => {
       className={`${classes.root}${className ? ` ${className}` : ''}`}
       {...otherProps}
     >
-
+      CourseCard
     </div>
   )
 }
