@@ -237,12 +237,13 @@ export class App extends React.Component {
         courses
       }))
     } catch (error) {
-      this.setState(() => ({
-        hasError: true,
-        errorMessage: error.data.error.message
-      }))
+      // this.setState(() => ({
+      //   hasError: true,
+      //   errorMessage: error.data.error.message
+      // }))
     } finally {
       this.setState(() => ({ isLoading: false }))
+      console.log(this.state.courses)
     }
   }
 
@@ -342,7 +343,10 @@ export class App extends React.Component {
                 <div>{
                   courses && courses.map((course) => {
                     return (
-                      <CourseCard key={course.id}/>
+                      <CourseCard
+                        key={course.id}
+                        course={course}
+                      />
                     )
                   })
                 }

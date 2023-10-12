@@ -7,6 +7,9 @@
   cursor: pointer;
   padding: 4px 10px 4px 10px;
   transition: background-color 0.35s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .contained {
@@ -36,4 +39,18 @@
 
 .text.secondary:hover {
   background-color: #fcf8dc;
+}
+
+.contained.primary.disabled,
+.contained.secondary.disabled,
+.contained.text.disabled,
+.disabled {
+  background-color: rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.26);
+  box-shadow: none;
+  cursor: default;
+}
+
+.iconWrapper {
+  margin-right: 8px;
 }

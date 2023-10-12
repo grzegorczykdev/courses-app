@@ -3,6 +3,7 @@
 .h1 {
   font-family: Roboto;
   font-size: 24px;
+  font-style: normal;
   font-weight: 400;
   line-height: 36px;
   letter-spacing: 0.15000000596046448px;
@@ -12,6 +13,7 @@
 .h3 {
   font-family: Roboto;
   font-size: 16px;
+  font-style: normal;
   font-weight: 500;
   line-height: 36px;
   letter-spacing: 0.15000000596046448px;
@@ -21,6 +23,7 @@
 .button {
   font-family: Roboto;
   font-size: 13px;
+  font-style: normal;
   font-weight: 500;
   line-height: 22px;
   letter-spacing: 0.46000000834465027px;
@@ -34,7 +37,7 @@
   font-weight: 400;
   line-height: 24px;
   letter-spacing: 0.15000000596046448px;
-  text-align: right;
+  text-align: left;
 }
 
 .caption {
@@ -44,12 +47,13 @@
   font-weight: 400;
   line-height: 20px;
   letter-spacing: 0.4000000059604645px;
-  text-align: right;
+  text-align: left;
 }
 
 .body2 {
   font-family: Roboto;
   font-size: 14px;
+  font-style: normal;
   font-weight: 400;
   line-height: 20px;
   letter-spacing: 0.15000000596046448px;

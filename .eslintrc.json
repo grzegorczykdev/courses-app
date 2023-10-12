@@ -1,6 +1,9 @@
 {
+  "parserOptions": {
+    "ecmaVersion": 11
+  },
   "extends": [
-    "react-app", "standard", "plugin:react/recommended"
+    "react-app", "plugin:react/recommended"
   ],
   "rules": {
     "node/handle-callback-err": ["off"],
