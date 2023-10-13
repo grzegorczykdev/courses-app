@@ -16,7 +16,8 @@ import AppBar from './components/AppBar'
 import Logo from './components/Logo'
 import UserDropdown from './components/UserDropdown'
 import ListItem from './components/ListItem'
-import CourseCard from './components/CourseCard'
+
+import CoursesList from './components/CoursesList'
 
 import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
 import { getAll as getAllCourses } from './api/courses'
@@ -340,16 +341,8 @@ export class App extends React.Component {
                     onClick={this.onUserDropdownClick}
                   />
                 </AppBar>
-                <div>{
-                  courses && courses.map((course) => {
-                    return (
-                      <CourseCard
-                        key={course.id}
-                        course={course}
-                      />
-                    )
-                  })
-                }
+                <div>
+                  <CoursesList courses={courses}/>
                 </div>
               </div>
             :
