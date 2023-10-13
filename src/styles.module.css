@@ -2,6 +2,10 @@
   width: calc(100% - 154px);
 }
 
+.searchTextField {
+  width: 100%;
+}
+
 .logo {
   width: 142px;
 }

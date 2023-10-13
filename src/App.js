@@ -24,6 +24,7 @@ import { getAll as getAllCourses } from './api/courses'
 import classes from './styles.module.css'
 import List from './components/List/List'
 import MainLayout from './components/MainLayout/MainLayout'
+import TextField from './components/TextField'
 
 const EMAIL_VALIDATION_ERROR = 'Please type a valid e-mail!'
 const PASSWORD_VALIDATION_ERROR = 'Password must have at least 6 chars!'
@@ -238,10 +239,10 @@ export class App extends React.Component {
         courses
       }))
     } catch (error) {
-      // this.setState(() => ({
-      //   hasError: true,
-      //   errorMessage: error.data.error.message
-      // }))
+      this.setState(() => ({
+        hasError: true,
+        errorMessage: error.data.error.message
+      }))
     } finally {
       this.setState(() => ({ isLoading: false }))
       console.log(this.state.courses)
@@ -280,6 +281,10 @@ export class App extends React.Component {
     }))
   }
 
+  onChangeSearchPhraseHandler = (e) => this.setState(() => ({
+    searchPhrase: e.target.value
+  }))
+
   render () {
     const {
       courses,
@@ -305,6 +310,7 @@ export class App extends React.Component {
       recoverPasswordEmail,
       recoverPasswordEmailError,
       recoverPasswordSubmitted,
+      searchPhrase,
       userDisplayName,
       userEmail,
       userAvatar,
@@ -346,7 +352,12 @@ export class App extends React.Component {
                   }
 
                   contentSearch={
-                    'content search'
+                    <TextField
+                      value={searchPhrase}
+                      onChange={this.onChangeSearchPhraseHandler}
+                      className={classes.searchTextField}
+                      placeholder={'Type to search'}
+                    />
                   }
 
                   contentMain={

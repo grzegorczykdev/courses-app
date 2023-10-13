@@ -10,6 +10,14 @@
   margin-bottom: 20px;
 }
 
+.thirdLeft {
+  justify-content: flex-start;
+}
+
+.thirdRight {
+  justify-content: flex-end;
+}
+
 @media (max-width: 1024px) {
   .courseCardWrapper {
     flex-basis: 50%;
