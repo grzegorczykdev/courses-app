@@ -10,21 +10,17 @@
   margin-bottom: 20px;
 }
 
-/* @media (min-width: 1025px) {
-
-  .courseCardWrapper:nth-of-type(1),
-  .courseCardWrapper:nth-of-type(4) {
-    justify-content: flex-start;
-  }
-
-  .courseCardWrapper:nth-of-type(3) {
-    justify-content: flex-end;
-  }
-} */
-
 @media (max-width: 1024px) {
   .courseCardWrapper {
     flex-basis: 50%;
+  }
+
+  .thirdLeft {
+    justify-content: center;
+  }
+
+  .thirdRight {
+    justify-content: center;
   }
 }
 

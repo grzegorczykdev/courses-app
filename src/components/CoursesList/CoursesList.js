@@ -16,10 +16,20 @@ export const CoursesList = (props) => {
       className={`${classes.root}${className ? ` ${className}` : ''}`}
       {...otherProps}
     >
-      {courses && courses.map((course) => {
+      {courses && courses.map((course, i) => {
+        const isThirdLeft = i === 0 || i % 3 === 0
+        const isThirdRight = (i + 1) % 3 === 0
                     return (
                       <div
-                        className={classes.courseCardWrapper}
+                        className={
+                          [
+                            classes.courseCardWrapper,
+                            isThirdLeft ? classes.thirdLeft : null,
+                            isThirdRight ? classes.thirdRight : null,
+                          ]
+                          .filter((className) => className)
+                          .join(' ')
+                        }
                         key={course.id}
                       >
                         <CourseCard
