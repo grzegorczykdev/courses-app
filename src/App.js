@@ -281,9 +281,14 @@ export class App extends React.Component {
     }))
   }
 
-  onChangeSearchPhraseHandler = (e) => this.setState(() => ({
-    searchPhrase: e.target.value
-  }))
+  onChangeSearchPhraseHandler = (e) => {
+    this.setState((prevState) => ({
+      searchPhrase: e.target.value,
+      courses: prevState.courses.filter(()=>{
+
+      })
+    }))
+  }
 
   render () {
     const {
