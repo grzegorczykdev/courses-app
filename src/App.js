@@ -12,7 +12,6 @@ import LoginForm from './components/LoginForm'
 import CreateAccountForm from './components/CreateAccountForm'
 import RecoverPasswordForm from './components/RecoverPasswordForm'
 
-import AppBar from './components/AppBar'
 import Logo from './components/Logo'
 import UserDropdown from './components/UserDropdown'
 import ListItem from './components/ListItem'
@@ -24,6 +23,7 @@ import { getAll as getAllCourses } from './api/courses'
 
 import classes from './styles.module.css'
 import List from './components/List/List'
+import MainLayout from './components/MainLayout/MainLayout'
 
 const EMAIL_VALIDATION_ERROR = 'Please type a valid e-mail!'
 const PASSWORD_VALIDATION_ERROR = 'Password must have at least 6 chars!'
@@ -316,34 +316,43 @@ export class App extends React.Component {
           isUserLoggedIn
             ?
               <div>
-                <AppBar>
-                  <Logo className={classes.logo}/>
-                  <UserDropdown
-                    userDisplayName={userDisplayName}
-                    userEmail={userEmail}
-                    userAvatar={userAvatar}
-                    className={classes.userDropdown}
-                    contentList={isUserDropdownOpen ?
-                      <List>
-                        <ListItem
-                          icon={'profile'}
-                          text={'Profile'}
-                          disabled={true}
-                          onClick={this.onUserDropdownProfileClick}
-                        />
-                        <ListItem
-                          icon={'log-out'}
-                          text={'Log out'}
-                          onClick={this.onUserDropdownLogOutClick}
-                        />
-                      </List>
+                <MainLayout
+                  contentAppBar={
+                    <>
+                      <Logo className={classes.logo}/>
+                      <UserDropdown
+                        userDisplayName={userDisplayName}
+                        userEmail={userEmail}
+                        userAvatar={userAvatar}
+                        className={classes.userDropdown}
+                        contentList={isUserDropdownOpen ?
+                          <List>
+                            <ListItem
+                              icon={'profile'}
+                              text={'Profile'}
+                              disabled={true}
+                              onClick={this.onUserDropdownProfileClick}
+                            />
+                            <ListItem
+                              icon={'log-out'}
+                              text={'Log out'}
+                              onClick={this.onUserDropdownLogOutClick}
+                            />
+                          </List>
                       : null}
-                    onClick={this.onUserDropdownClick}
-                  />
-                </AppBar>
-                <div>
-                  <CoursesList courses={courses}/>
-                </div>
+                        onClick={this.onUserDropdownClick}
+                      />
+                    </>
+                  }
+
+                  contentSearch={
+                    'content search'
+                  }
+
+                  contentMain={
+                    <CoursesList courses={courses}/>
+                  }
+                />
               </div>
             :
             notLoginUserRoute === 'LOGIN' ?

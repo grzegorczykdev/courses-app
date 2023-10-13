@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import classes from './styles.module.css'
 
-export const AppBar = (props) => {
+export const Container = (props) => {
   const {
     className,
     children,
@@ -20,9 +20,9 @@ export const AppBar = (props) => {
   )
 }
 
-AppBar.propTypes = {
-  children: PropTypes.node,
-  className: PropTypes.string
+Container.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.node
 }
 
-export default AppBar
+export default Container
