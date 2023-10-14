@@ -236,7 +236,8 @@ export class App extends React.Component {
     try {
       const courses = await getAllCourses()
       this.setState(() => ({
-        courses
+        courses,
+        allCourses: courses
       }))
     } catch (error) {
       this.setState(() => ({
@@ -282,11 +283,8 @@ export class App extends React.Component {
   }
 
   onChangeSearchPhraseHandler = (e) => {
-    this.setState((prevState) => ({
-      searchPhrase: e.target.value,
-      courses: prevState.courses.filter(()=>{
-
-      })
+    this.setState(() => ({
+      searchPhrase: e.target.value
     }))
   }
 
@@ -321,6 +319,13 @@ export class App extends React.Component {
       userAvatar,
       isUserDropdownOpen
     } = this.state
+
+    const filteredCourses = courses && courses.filter((course) => {
+      return (course.category).toLowerCase().includes(searchPhrase.toLowerCase()) ||
+        (course.description).toLowerCase().includes(searchPhrase.toLowerCase()) ||
+        (course.title).toLowerCase().includes(searchPhrase.toLowerCase())
+    })
+
     return (
       <div>
         {
@@ -350,7 +355,7 @@ export class App extends React.Component {
                               onClick={this.onUserDropdownLogOutClick}
                             />
                           </List>
-                      : null}
+                          : null}
                         onClick={this.onUserDropdownClick}
                       />
                     </>
@@ -366,7 +371,7 @@ export class App extends React.Component {
                   }
 
                   contentMain={
-                    <CoursesList courses={courses}/>
+                    <CoursesList courses={filteredCourses}/>
                   }
                 />
               </div>
