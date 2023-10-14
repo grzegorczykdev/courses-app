@@ -201,9 +201,16 @@ export class App extends React.Component {
   }
 
   // User dropdown
-  onUserDropdownClick = () => {
-    this.setState((prevState) => ({
-      isUserDropdownOpen: !prevState.isUserDropdownOpen
+  userDropdownOpenRequestHandler = () => {
+    console.log('open')
+    this.setState(() => ({
+      isUserDropdownOpen: true
+    }))
+  }
+
+  userDropdownCloseRequestHandler = () => {
+    this.setState(() => ({
+      isUserDropdownOpen: false
     }))
   }
 
@@ -217,6 +224,7 @@ export class App extends React.Component {
       await logOut()
       this.setState(() => ({
         isUserLoggedIn: false,
+        isUserDropdownOpen: false,
         userDisplayName: '',
         userEmail: '',
         userAvatar: ''
@@ -356,7 +364,8 @@ export class App extends React.Component {
                             />
                           </List>
                           : null}
-                        onClick={this.onUserDropdownClick}
+                        onOpenRequested={this.userDropdownOpenRequestHandler}
+                        onCloseRequested={this.userDropdownCloseRequestHandler}
                       />
                     </>
                   }

@@ -9,6 +9,8 @@ export const UserDropdown = (props) => {
   const {
     contentList,
     className,
+    onOpenRequested,
+    onCloseRequested,
     userDisplayName,
     userEmail,
     userAvatar,
@@ -20,7 +22,10 @@ export const UserDropdown = (props) => {
       className={`${classes.root}${className ? ` ${className}` : ''}`}
       {...otherProps}
     >
-      <div className={classes.wrapper}>
+      <div
+        className={classes.wrapper}
+        onClick={onOpenRequested}
+      >
         <div className={classes.textWrapper}>
           <Typography
             variant={'body1'}
@@ -43,11 +48,19 @@ export const UserDropdown = (props) => {
       </div>
       {
         contentList ?
-          <div className={classes.listContainer}>
-            {contentList}
-          </div>
+          <>
+            <div
+              className={classes.overlay}
+              onClick={onCloseRequested}
+            >
+            </div>
+            <div className={classes.listContainer}>
+              {contentList}
+            </div>
+          </>
           : null
         }
+      {/* <div className={classes.overlay}></div> */}
     </div>
   )
 }
@@ -55,6 +68,8 @@ export const UserDropdown = (props) => {
 UserDropdown.propTypes = {
   contentList: PropTypes.node,
   className: PropTypes.string,
+  onOpenRequested: PropTypes.func,
+  onCloseRequested: PropTypes.func,
   userDisplayName: PropTypes.string,
   userEmail: PropTypes.string.isRequired,
   userAvatar: PropTypes.string
