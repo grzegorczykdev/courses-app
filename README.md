@@ -1,3 +1,4 @@
-# Getting Started with Create React App - My template
+# First react project - created during the CodeRoad course
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) and My template.
+This is my first React project. It was created during the CodeRoad course.
+Link: https://github.com/grzegorczykdev/
