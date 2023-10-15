@@ -18,14 +18,6 @@ export class PageLogin extends React.Component {
     loginSubmitted: false
   }
 
-  onClickLoginCreateAccountHandler = () => {
-    this.setState(() => ({ notLoginUserRoute: 'CREATE-ACCOUNT' }))
-  }
-
-  onClickLoginForgotPasswordHandler = () => {
-    this.setState(() => ({ notLoginUserRoute: 'FORGOT-PASSWORD' }))
-  }
-
   onChangeLoginEmailHandler = (e) => {
     this.setState(() => ({
       loginEmail: e.target.value,
@@ -52,6 +44,8 @@ export class PageLogin extends React.Component {
   render () {
     const {
       className,
+      onClickLoginCreateAccountHandler,
+      onClickLoginForgotPasswordHandler,
       ...otherProps
     } = this.props
 
@@ -75,8 +69,8 @@ export class PageLogin extends React.Component {
             password={loginPassword}
             passwordError={loginSubmitted ? loginPasswordError : undefined}
             onClickLogin={this.onClickLogin}
-            onClickCreateAccount={this.onClickLoginCreateAccountHandler}
-            onClickForgotPassword={this.onClickLoginForgotPasswordHandler}
+            onClickCreateAccount={onClickLoginCreateAccountHandler}
+            onClickForgotPassword={onClickLoginForgotPasswordHandler}
             onChangeEmail={this.onChangeLoginEmailHandler}
             onChangePassword={this.onChangeLoginPasswordHandler}
           />
@@ -88,7 +82,9 @@ export class PageLogin extends React.Component {
 
 PageLogin.propTypes = {
   className: PropTypes.string,
-  onClickLogin: PropTypes.func
+  onClickLogin: PropTypes.func,
+  onClickLoginCreateAccountHandler: PropTypes.func,
+  onClickLoginForgotPasswordHandler: PropTypes.func
 }
 
 export default PageLogin

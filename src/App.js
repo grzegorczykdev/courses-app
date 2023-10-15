@@ -1,21 +1,19 @@
 import React from 'react'
 
-import isEmail from 'validator/lib/isEmail'
-
 import FullPageLoader from './components/FullPageLoader'
 import FullPageMessage from './components/FullPageMessage'
 
 import FullPageLayout from './components/FullPageLayout'
 import Message from './components/Message'
 
-import CreateAccountForm from './components/CreateAccountForm'
 import RecoverPasswordForm from './components/RecoverPasswordForm'
 
 import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
-import { REPEAT_PASSWORD_VALIDATION_ERROR, EMAIL_VALIDATION_ERROR, PASSWORD_VALIDATION_ERROR } from './consts'
+import { EMAIL_VALIDATION_ERROR, PASSWORD_VALIDATION_ERROR } from './consts'
 import { getAll as getAllCourses } from './api/courses'
 import PageCoursesList from './pages/PageCoursesList/PageCoursesList'
 import PageLogin from './pages/PageLogin/PageLogin'
+import PageCreateAccount from './pages/PageCreateAccount/PageCreateAccount'
 
 export class App extends React.Component {
   state = {
@@ -35,15 +33,6 @@ export class App extends React.Component {
     // router state
     notLoginUserRoute: 'LOGIN', // 'LOGIN, 'CREATE-ACCOUNT', 'FORGOT-PASSWORD'
 
-    // create account page
-    createAccountEmail: '',
-    createAccountEmailError: EMAIL_VALIDATION_ERROR,
-    createAccountPassword: '',
-    createAccountPasswordError: PASSWORD_VALIDATION_ERROR,
-    createAccountRepeatPassword: '',
-    createAccountRepeatPasswordError: REPEAT_PASSWORD_VALIDATION_ERROR,
-    createAccountSubmitted: false,
-
     // recover password page
     recoverPasswordEmail: '',
     recoverPasswordEmailError: EMAIL_VALIDATION_ERROR,
@@ -54,6 +43,14 @@ export class App extends React.Component {
 
   }
 
+  onClickLoginCreateAccountHandler = () => {
+    this.setState(() => ({ notLoginUserRoute: 'CREATE-ACCOUNT' }))
+  }
+
+  onClickLoginForgotPasswordHandler = () => {
+    this.setState(() => ({ notLoginUserRoute: 'FORGOT-PASSWORD' }))
+  }
+
   async componentDidMount () {
     this.setState(() => ({ isLoading: true }))
     const userIsLoggedIn = await checkIfUserIsLoggedIn()
@@ -62,35 +59,10 @@ export class App extends React.Component {
   }
 
   // Create account
-  onChangeCAEmailHandler = (e) => this.setState(() => ({
-    createAccountEmail: e.target.value,
-    createAccountEmailError: isEmail(e.target.value) ? '' : EMAIL_VALIDATION_ERROR
-  }))
-
-  onChangeCACreateAccountPasswordHandler = (e) => this.setState(() => ({
-    createAccountPassword: e.target.value,
-    createAccountPasswordError: e.target.value.length >= 6 ? '' : PASSWORD_VALIDATION_ERROR
-  }))
-
-  onChangeCARepeatPasswordHandler = (e) => {
-    console.log(this.state.createAccountPassword)
-    console.log(e.target.value)
-    this.setState(() => ({
-      createAccountRepeatPassword: e.target.value,
-      createAccountRepeatPasswordError: e.target.value === this.state.createAccountPassword ? '' : REPEAT_PASSWORD_VALIDATION_ERROR
-    }))
-  }
-
-  onClickCACreateAccountHandler = async () => {
-    this.setState(() => ({ createAccountSubmitted: true }))
-
-    if (this.state.createAccountEmailError) return
-    if (this.state.createAccountPasswordError) return
-    if (this.state.createAccountRepeatPasswordError) return
-
+  onClickCACreateAccountHandler = async (email, password) => {
     this.setState(() => ({ isLoading: true }))
     try {
-      await signUp(this.state.createAccountEmail, this.state.createAccountPassword)
+      await signUp(email, password)
       this.setState(() => ({
         isInfoDisplayed: true,
         infoMessage: 'User account created. User is logged in!'
@@ -232,13 +204,6 @@ export class App extends React.Component {
   render () {
     const {
       courses,
-      createAccountEmail,
-      createAccountEmailError,
-      createAccountPassword,
-      createAccountPasswordError,
-      createAccountRepeatPassword,
-      createAccountRepeatPasswordError,
-      createAccountSubmitted,
       errorMessage,
       hasError,
       infoMessage,
@@ -271,23 +236,14 @@ export class App extends React.Component {
             notLoginUserRoute === 'LOGIN' ?
               <PageLogin
                 onClickLogin={this.onClickLogin}
+                onClickLoginCreateAccountHandler={this.onClickLoginCreateAccountHandler}
+                onClickLoginForgotPasswordHandler={this.onClickLoginForgotPasswordHandler}
               />
               : notLoginUserRoute === 'CREATE-ACCOUNT' ?
-                <FullPageLayout>
-                  <CreateAccountForm
-                    createAccountEmail={createAccountEmail}
-                    createAccountEmailError={createAccountSubmitted ? createAccountEmailError : undefined}
-                    createAccountPassword={createAccountPassword}
-                    createAccountPasswordError={createAccountSubmitted ? createAccountPasswordError : undefined}
-                    createAccountRepeatPassword={createAccountRepeatPassword}
-                    createAccountRepeatPasswordError={createAccountSubmitted ? createAccountRepeatPasswordError : undefined}
-                    onChangeEmail={this.onChangeCAEmailHandler}
-                    onChangePassword={this.onChangeCACreateAccountPasswordHandler}
-                    onChangeRepeatPassword={this.onChangeCARepeatPasswordHandler}
-                    onClickCreateAccount={this.onClickCACreateAccountHandler}
-                    onClickBackToLogin={this.onClickCABackToLoginHandler}
-                  />
-                </FullPageLayout>
+                <PageCreateAccount
+                  onClickCACreateAccountHandler={this.onClickCACreateAccountHandler}
+                  onClickCABackToLoginHandler={this.onClickCABackToLoginHandler}
+                />
                 : notLoginUserRoute === 'FORGOT-PASSWORD' ?
                   <FullPageLayout>
                     <RecoverPasswordForm
