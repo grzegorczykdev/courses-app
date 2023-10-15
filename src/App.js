@@ -8,17 +8,14 @@ import FullPageMessage from './components/FullPageMessage'
 import FullPageLayout from './components/FullPageLayout'
 import Message from './components/Message'
 
-import LoginForm from './components/LoginForm'
 import CreateAccountForm from './components/CreateAccountForm'
 import RecoverPasswordForm from './components/RecoverPasswordForm'
 
 import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
+import { REPEAT_PASSWORD_VALIDATION_ERROR, EMAIL_VALIDATION_ERROR, PASSWORD_VALIDATION_ERROR } from './consts'
 import { getAll as getAllCourses } from './api/courses'
 import PageCoursesList from './pages/PageCoursesList/PageCoursesList'
-
-const EMAIL_VALIDATION_ERROR = 'Please type a valid e-mail!'
-const PASSWORD_VALIDATION_ERROR = 'Password must have at least 6 chars!'
-const REPEAT_PASSWORD_VALIDATION_ERROR = 'Passwords must be the same!'
+import PageLogin from './pages/PageLogin/PageLogin'
 
 export class App extends React.Component {
   state = {
@@ -37,13 +34,6 @@ export class App extends React.Component {
 
     // router state
     notLoginUserRoute: 'LOGIN', // 'LOGIN, 'CREATE-ACCOUNT', 'FORGOT-PASSWORD'
-
-    // login page state
-    loginEmail: '',
-    loginEmailError: EMAIL_VALIDATION_ERROR,
-    loginPassword: '',
-    loginPasswordError: PASSWORD_VALIDATION_ERROR,
-    loginSubmitted: false,
 
     // create account page
     createAccountEmail: '',
@@ -70,45 +60,6 @@ export class App extends React.Component {
     if (userIsLoggedIn) this.onUserLogged()
     this.setState(() => ({ isLoading: false }))
   }
-
-  // Login
-  onClickLogin = async () => {
-    this.setState(() => ({ loginSubmitted: true }))
-
-    if (this.state.loginEmailError) return
-    if (this.state.loginPasswordError) return
-
-    this.setState(() => ({ isLoading: true }))
-    try {
-      await signIn(this.state.loginEmail, this.state.loginPassword)
-      this.onUserLogged()
-    } catch (error) {
-      this.setState(() => ({
-        hasError: true,
-        errorMessage: error.data.error.message
-      }))
-    } finally {
-      this.setState(() => ({ isLoading: false }))
-    }
-  }
-
-  onChangeLoginEmailHandler = (e) => {
-    this.setState(() => ({
-      loginEmail: e.target.value,
-      loginEmailError: isEmail(e.target.value) ? '' : EMAIL_VALIDATION_ERROR
-    }))
-  }
-
-  onChangeLoginPasswordHandler = (e) => {
-    this.setState(() => ({
-      loginPassword: e.target.value,
-      loginPasswordError: e.target.value.length >= 6 ? '' : PASSWORD_VALIDATION_ERROR
-    }))
-  }
-
-  onClickLoginCreateAccountHandler = () => this.setState(() => ({ notLoginUserRoute: 'CREATE-ACCOUNT' }))
-
-  onClickLoginForgotPasswordHandler = () => this.setState(() => ({ notLoginUserRoute: 'FORGOT-PASSWORD' }))
 
   // Create account
   onChangeCAEmailHandler = (e) => this.setState(() => ({
@@ -249,6 +200,21 @@ export class App extends React.Component {
     this.fetchCourses()
   }
 
+  onClickLogin = async (email, password) => {
+    this.setState(() => ({ isLoading: true }))
+    try {
+      await signIn(email, password)
+      this.onUserLogged()
+    } catch (error) {
+      this.setState(() => ({
+        hasError: true,
+        errorMessage: error.data.error.message
+      }))
+    } finally {
+      this.setState(() => ({ isLoading: false }))
+    }
+  }
+
   dismissError = () => {
     this.setState(() => ({
       hasError: false,
@@ -279,11 +245,6 @@ export class App extends React.Component {
       isInfoDisplayed,
       isLoading,
       isUserLoggedIn,
-      loginEmail,
-      loginEmailError,
-      loginPassword,
-      loginPasswordError,
-      loginSubmitted,
       notLoginUserRoute,
       recoverPasswordEmail,
       recoverPasswordEmailError,
@@ -308,19 +269,9 @@ export class App extends React.Component {
               />
             :
             notLoginUserRoute === 'LOGIN' ?
-              <FullPageLayout>
-                <LoginForm
-                  email={loginEmail}
-                  emailError={loginSubmitted ? loginEmailError : undefined}
-                  password={loginPassword}
-                  passwordError={loginSubmitted ? loginPasswordError : undefined}
-                  onClickLogin={this.onClickLogin}
-                  onClickCreateAccount={this.onClickLoginCreateAccountHandler}
-                  onClickForgotPassword={this.onClickLoginForgotPasswordHandler}
-                  onChangeEmail={this.onChangeLoginEmailHandler}
-                  onChangePassword={this.onChangeLoginPasswordHandler}
-                />
-              </FullPageLayout>
+              <PageLogin
+                onClickLogin={this.onClickLogin}
+              />
               : notLoginUserRoute === 'CREATE-ACCOUNT' ?
                 <FullPageLayout>
                   <CreateAccountForm
