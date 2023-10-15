@@ -30,8 +30,6 @@ export class PageCreateAccount extends React.Component {
   }))
 
   onChangeCARepeatPasswordHandler = (e) => {
-    console.log(this.state.createAccountPassword)
-    console.log(e.target.value)
     this.setState(() => ({
       createAccountRepeatPassword: e.target.value,
       createAccountRepeatPasswordError: e.target.value === this.state.createAccountPassword ? '' : REPEAT_PASSWORD_VALIDATION_ERROR

@@ -33,7 +33,6 @@ export class PageCoursesList extends React.Component {
 
   // User dropdown
   userDropdownOpenRequestHandler = () => {
-    console.log('open')
     this.setState(() => ({
       isUserDropdownOpen: true
     }))

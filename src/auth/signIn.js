@@ -5,7 +5,6 @@ import { FIREBASE_APP_KEY } from './const'
 const SIGN_IN_URL = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + FIREBASE_APP_KEY
 
 export const signIn = (email, password) => {
-  console.log(FIREBASE_APP_KEY)
   return makeRequest(
     SIGN_IN_URL,
     {

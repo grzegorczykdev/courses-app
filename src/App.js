@@ -54,16 +54,10 @@ export class App extends React.Component {
     this.setState(() => ({ isLoading: false }))
   }
 
-  // Create account
-  onClickCACreateAccountHandler = async (email, password) => {
+  handleAsyncAction = async (asyncAction) => {
     this.setState(() => ({ isLoading: true }))
     try {
-      await signUp(email, password)
-      this.setState(() => ({
-        isInfoDisplayed: true,
-        infoMessage: 'User account created. User is logged in!'
-      }))
-      this.onUserLogged()
+      await asyncAction()
     } catch (error) {
       this.setState(() => ({
         hasError: true,
@@ -74,22 +68,25 @@ export class App extends React.Component {
     }
   }
 
+  onClickCACreateAccountHandler = async (email, password) => {
+    this.handleAsyncAction(async () => {
+      await signUp(email, password)
+      this.setState(() => ({
+        isInfoDisplayed: true,
+        infoMessage: 'User account created. User is logged in!'
+      }))
+      this.onUserLogged()
+    })
+  }
+
   onClickResetRecoverPasswordHandler = async (email) => {
-    this.setState(() => ({ isLoading: true }))
-    try {
+    this.handleAsyncAction(async () => {
       await sendPasswordResetEmail(email)
       this.setState(() => ({
         isInfoDisplayed: true,
         infoMessage: 'Check your inbox'
       }))
-    } catch (error) {
-      this.setState(() => ({
-        hasError: true,
-        errorMessage: error.data.error.message
-      }))
-    } finally {
-      this.setState(() => ({ isLoading: false }))
-    }
+    })
   }
 
   onUserDropdownProfileClick = () => {
@@ -97,8 +94,7 @@ export class App extends React.Component {
   }
 
   onUserDropdownLogOutClick = async () => {
-    this.setState(() => ({ isLoading: true }))
-    try {
+    this.handleAsyncAction(async () => {
       await logOut()
       this.setState(() => ({
         isUserLoggedIn: false,
@@ -107,36 +103,19 @@ export class App extends React.Component {
         userEmail: '',
         userAvatar: ''
       }))
-    } catch (error) {
-      this.setState(() => ({
-        hasError: true,
-        errorMessage: error.data.error.message
-      }))
-    } finally {
-      this.setState(() => ({ isLoading: false }))
-    }
+    })
   }
 
   fetchCourses = async () => {
-    this.setState(() => ({ isLoading: true }))
-    try {
+    this.handleAsyncAction(async () => {
       const courses = await getAllCourses()
       this.setState(() => ({
         courses,
         allCourses: courses
       }))
-    } catch (error) {
-      this.setState(() => ({
-        hasError: true,
-        errorMessage: error.data.error.message
-      }))
-    } finally {
-      this.setState(() => ({ isLoading: false }))
-      console.log(this.state.courses)
-    }
+    })
   }
 
-  // Other
   onUserLogged = () => {
     const token = getIdToken()
     if (!token) return
@@ -155,18 +134,10 @@ export class App extends React.Component {
   }
 
   onClickLogin = async (email, password) => {
-    this.setState(() => ({ isLoading: true }))
-    try {
+    this.handleAsyncAction(async () => {
       await signIn(email, password)
       this.onUserLogged()
-    } catch (error) {
-      this.setState(() => ({
-        hasError: true,
-        errorMessage: error.data.error.message
-      }))
-    } finally {
-      this.setState(() => ({ isLoading: false }))
-    }
+    })
   }
 
   dismissError = () => {
