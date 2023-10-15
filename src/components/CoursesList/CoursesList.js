@@ -18,7 +18,7 @@ export const CoursesList = (props) => {
       {...otherProps}
     >
       {
-        courses && courses.length === 0 ?
+        !courses || courses.length === 0 ?
           <Typography className={classes.typographyNoCourses}>
             No courses found
           </Typography>

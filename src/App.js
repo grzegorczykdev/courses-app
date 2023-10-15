@@ -12,19 +12,9 @@ import LoginForm from './components/LoginForm'
 import CreateAccountForm from './components/CreateAccountForm'
 import RecoverPasswordForm from './components/RecoverPasswordForm'
 
-import Logo from './components/Logo'
-import UserDropdown from './components/UserDropdown'
-import ListItem from './components/ListItem'
-
-import CoursesList from './components/CoursesList'
-
 import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
 import { getAll as getAllCourses } from './api/courses'
-
-import classes from './styles.module.css'
-import List from './components/List/List'
-import MainLayout from './components/MainLayout/MainLayout'
-import TextField from './components/TextField'
+import PageCoursesList from './pages/PageCoursesList/PageCoursesList'
 
 const EMAIL_VALIDATION_ERROR = 'Please type a valid e-mail!'
 const PASSWORD_VALIDATION_ERROR = 'Password must have at least 6 chars!'
@@ -44,9 +34,6 @@ export class App extends React.Component {
     userDisplayName: '',
     userEmail: '',
     userAvatar: '',
-
-    // user dropdown
-    isUserDropdownOpen: false,
 
     // router state
     notLoginUserRoute: 'LOGIN', // 'LOGIN, 'CREATE-ACCOUNT', 'FORGOT-PASSWORD'
@@ -72,9 +59,9 @@ export class App extends React.Component {
     recoverPasswordEmailError: EMAIL_VALIDATION_ERROR,
     recoverPasswordSubmitted: false,
 
-    // course list page
-    courses: null,
-    searchPhrase: ''
+    // courses
+    courses: null
+
   }
 
   async componentDidMount () {
@@ -200,20 +187,6 @@ export class App extends React.Component {
     }
   }
 
-  // User dropdown
-  userDropdownOpenRequestHandler = () => {
-    console.log('open')
-    this.setState(() => ({
-      isUserDropdownOpen: true
-    }))
-  }
-
-  userDropdownCloseRequestHandler = () => {
-    this.setState(() => ({
-      isUserDropdownOpen: false
-    }))
-  }
-
   onUserDropdownProfileClick = () => {
     console.log('2')
   }
@@ -290,12 +263,6 @@ export class App extends React.Component {
     }))
   }
 
-  onChangeSearchPhraseHandler = (e) => {
-    this.setState(() => ({
-      searchPhrase: e.target.value
-    }))
-  }
-
   render () {
     const {
       courses,
@@ -321,69 +288,24 @@ export class App extends React.Component {
       recoverPasswordEmail,
       recoverPasswordEmailError,
       recoverPasswordSubmitted,
-      searchPhrase,
       userDisplayName,
       userEmail,
-      userAvatar,
-      isUserDropdownOpen
+      userAvatar
     } = this.state
-
-    const filteredCourses = courses && courses.filter((course) => {
-      return (course.category).toLowerCase().includes(searchPhrase.toLowerCase()) ||
-        (course.description).toLowerCase().includes(searchPhrase.toLowerCase()) ||
-        (course.title).toLowerCase().includes(searchPhrase.toLowerCase())
-    })
 
     return (
       <div>
         {
           isUserLoggedIn
             ?
-              <div>
-                <MainLayout
-                  contentAppBar={
-                    <>
-                      <Logo className={classes.logo}/>
-                      <UserDropdown
-                        userDisplayName={userDisplayName}
-                        userEmail={userEmail}
-                        userAvatar={userAvatar}
-                        className={classes.userDropdown}
-                        contentList={isUserDropdownOpen ?
-                          <List>
-                            <ListItem
-                              icon={'profile'}
-                              text={'Profile'}
-                              disabled={true}
-                              onClick={this.onUserDropdownProfileClick}
-                            />
-                            <ListItem
-                              icon={'log-out'}
-                              text={'Log out'}
-                              onClick={this.onUserDropdownLogOutClick}
-                            />
-                          </List>
-                          : null}
-                        onOpenRequested={this.userDropdownOpenRequestHandler}
-                        onCloseRequested={this.userDropdownCloseRequestHandler}
-                      />
-                    </>
-                  }
-
-                  contentSearch={
-                    <TextField
-                      value={searchPhrase}
-                      onChange={this.onChangeSearchPhraseHandler}
-                      className={classes.searchTextField}
-                      placeholder={'Type to search'}
-                    />
-                  }
-
-                  contentMain={
-                    <CoursesList courses={filteredCourses}/>
-                  }
-                />
-              </div>
+              <PageCoursesList
+                courses={courses}
+                userDisplayName={userDisplayName}
+                userEmail={userEmail}
+                userAvatar={userAvatar}
+                onUserDropdownProfileClick={this.onUserDropdownProfileClick}
+                onUserDropdownLogOutClick={this.onUserDropdownLogOutClick}
+              />
             :
             notLoginUserRoute === 'LOGIN' ?
               <FullPageLayout>
