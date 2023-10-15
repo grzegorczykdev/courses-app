@@ -6,14 +6,12 @@ import FullPageMessage from './components/FullPageMessage'
 import FullPageLayout from './components/FullPageLayout'
 import Message from './components/Message'
 
-import RecoverPasswordForm from './components/RecoverPasswordForm'
-
 import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
-import { EMAIL_VALIDATION_ERROR, PASSWORD_VALIDATION_ERROR } from './consts'
 import { getAll as getAllCourses } from './api/courses'
 import PageCoursesList from './pages/PageCoursesList/PageCoursesList'
 import PageLogin from './pages/PageLogin/PageLogin'
 import PageCreateAccount from './pages/PageCreateAccount/PageCreateAccount'
+import PageRecoverPassword from './pages/PageRecoverPassword/PageRecoverPassword'
 
 export class App extends React.Component {
   state = {
@@ -33,14 +31,8 @@ export class App extends React.Component {
     // router state
     notLoginUserRoute: 'LOGIN', // 'LOGIN, 'CREATE-ACCOUNT', 'FORGOT-PASSWORD'
 
-    // recover password page
-    recoverPasswordEmail: '',
-    recoverPasswordEmailError: EMAIL_VALIDATION_ERROR,
-    recoverPasswordSubmitted: false,
-
     // courses
     courses: null
-
   }
 
   onClickLoginCreateAccountHandler = () => {
@@ -49,6 +41,10 @@ export class App extends React.Component {
 
   onClickLoginForgotPasswordHandler = () => {
     this.setState(() => ({ notLoginUserRoute: 'FORGOT-PASSWORD' }))
+  }
+
+  onClickBackToLoginHandler = () => {
+    this.setState(() => ({ notLoginUserRoute: 'LOGIN' }))
   }
 
   async componentDidMount () {
@@ -78,24 +74,10 @@ export class App extends React.Component {
     }
   }
 
-  onClickCABackToLoginHandler = () => this.setState(() => ({ notLoginUserRoute: 'LOGIN' }))
-
-  // Forgot password
-  onChangeResetEmailHandler = (e) => this.setState(() => ({
-    recoverPasswordEmail: e.target.value,
-    recoverPasswordEmailError: e.target.value.length >= 6 ? '' : PASSWORD_VALIDATION_ERROR
-  }))
-
-  onClickResetBackToLoginHandler = () => this.setState(() => ({ notLoginUserRoute: 'LOGIN' }))
-
-  onClickResetRecoverPasswordHandler = async () => {
-    this.setState(() => ({ recoverPasswordSubmitted: true }))
-
-    if (this.state.recoverPasswordEmailError) return
-
+  onClickResetRecoverPasswordHandler = async (email) => {
     this.setState(() => ({ isLoading: true }))
     try {
-      await sendPasswordResetEmail(this.state.recoverPasswordEmail)
+      await sendPasswordResetEmail(email)
       this.setState(() => ({
         isInfoDisplayed: true,
         infoMessage: 'Check your inbox'
@@ -211,9 +193,6 @@ export class App extends React.Component {
       isLoading,
       isUserLoggedIn,
       notLoginUserRoute,
-      recoverPasswordEmail,
-      recoverPasswordEmailError,
-      recoverPasswordSubmitted,
       userDisplayName,
       userEmail,
       userAvatar
@@ -242,18 +221,14 @@ export class App extends React.Component {
               : notLoginUserRoute === 'CREATE-ACCOUNT' ?
                 <PageCreateAccount
                   onClickCACreateAccountHandler={this.onClickCACreateAccountHandler}
-                  onClickCABackToLoginHandler={this.onClickCABackToLoginHandler}
+                  onClickCABackToLoginHandler={this.onClickBackToLoginHandler}
                 />
                 : notLoginUserRoute === 'FORGOT-PASSWORD' ?
-                  <FullPageLayout>
-                    <RecoverPasswordForm
-                      recoverPasswordEmail={recoverPasswordEmail}
-                      recoverPasswordEmailError={recoverPasswordSubmitted ? recoverPasswordEmailError : undefined}
-                      onChangeEmail={this.onChangeResetEmailHandler}
-                      onClickBackToLogin={this.onClickResetBackToLoginHandler}
-                      onClickRecoverPassword={this.onClickResetRecoverPasswordHandler}
-                    />
-                  </FullPageLayout> :
+                  <PageRecoverPassword
+                    onClickResetRecoverPasswordHandler={this.onClickResetRecoverPasswordHandler}
+                    onClickResetBackToLoginHandler={this.onClickBackToLoginHandler}
+                  />
+                  :
                   null}
         {
           /*
