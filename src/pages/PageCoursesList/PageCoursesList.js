@@ -28,19 +28,6 @@ export const PageCoursesList = (props) => {
   const [searchPhrase, setSearchPhrase] = React.useState('')
   const [isUserDropdownOpen, setIsUserDropdownOpen] = React.useState('')
 
-  const onChangeSearchPhraseHandler = (e) => {
-    setSearchPhrase(() => e.target.value)
-  }
-
-  const userDropdownCloseRequestHandler = () => {
-    setIsUserDropdownOpen(() => false)
-  }
-
-  // User dropdown
-  const userDropdownOpenRequestHandler = () => {
-    setIsUserDropdownOpen(() => true)
-  }
-
   const filteredCourses = React.useMemo(() =>
     courses && courses.filter((course) => {
       return (course.category).toLowerCase().includes(searchPhrase.toLowerCase()) ||
@@ -78,8 +65,12 @@ export const PageCoursesList = (props) => {
                   />
                 </List>
                 : null}
-              onOpenRequested={userDropdownOpenRequestHandler}
-              onCloseRequested={userDropdownCloseRequestHandler}
+              onOpenRequested={() => {
+                setIsUserDropdownOpen(() => true)
+              }}
+              onCloseRequested={() => {
+                setIsUserDropdownOpen(() => false)
+              }}
             />
           </>
                   }
@@ -87,7 +78,9 @@ export const PageCoursesList = (props) => {
         contentSearch={
           <TextField
             value={searchPhrase}
-            onChange={onChangeSearchPhraseHandler}
+            onChange={(e) => {
+              setSearchPhrase(() => e.target.value)
+            }}
             className={classes.searchTextField}
             placeholder={'Type to search'}
           />

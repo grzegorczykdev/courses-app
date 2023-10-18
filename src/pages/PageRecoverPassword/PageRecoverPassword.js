@@ -20,10 +20,6 @@ export const PageRecoverPassword = (props) => {
   const [emailError, setEmailError] = React.useState(EMAIL_VALIDATION_ERROR)
   const [isSubmitted, setIsSubmitted] = React.useState(false)
 
-  const onChangeResetEmailHandler = React.useCallback((e) => {
-    setEmail(() => e.target.value)
-  }, [])
-
   const onClickResetRecoverPasswordHandler = React.useCallback(async () => {
     setIsSubmitted(() => true)
 
@@ -45,7 +41,9 @@ export const PageRecoverPassword = (props) => {
         <RecoverPasswordForm
           email={email}
           emailError={isSubmitted ? emailError : undefined}
-          onChangeEmail={onChangeResetEmailHandler}
+          onChangeEmail={(e) => {
+            setEmail(() => e.target.value)
+          }}
           onClickBackToLogin={onClickResetBackToLoginHandler}
           onClickRecoverPassword={onClickResetRecoverPasswordHandler}
         />
