@@ -11,6 +11,7 @@ import PageCreateAccount from './pages/PageCreateAccount/PageCreateAccount'
 import PageRecoverPassword from './pages/PageRecoverPassword/PageRecoverPassword'
 
 import { useRoute } from './contexts/RouterContext'
+import { useAuthUser } from './contexts/UserContext'
 
 import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
 
@@ -22,15 +23,22 @@ export const App = () => {
   const [errorMessage, setErrorMessage] = React.useState('')
   const [isInfoDisplayed, setIsInfoDisplayed] = React.useState(false)
   const [infoMessage, setInfoMessage] = React.useState('')
-  const [isUserLoggedIn, setIsUserLoggedIn] = React.useState(false)
-  const [userDisplayName, setUserDisplayName] = React.useState('')
-  const [userEmail, setUserEmail] = React.useState('')
-  const [userAvatar, setUserAvatar] = React.useState('')
 
   // router state
   const notLoginUserRoute = useRoute()
 
   const [courses, setCourses] = React.useState(null)
+
+  const {
+    isUserLoggedIn,
+    userDisplayName,
+    userEmail,
+    userAvatar,
+    setIsUserLoggedIn,
+    setUserDisplayName,
+    setUserEmail,
+    setUserAvatar
+  } = useAuthUser()
 
   const handleAsyncAction = React.useCallback(async (asyncAction) => {
     setIsLoading(() => true)
@@ -61,7 +69,7 @@ export const App = () => {
     setUserEmail(() => user.email)
     setUserAvatar(() => '')
     fetchCourses()
-  }, [fetchCourses])
+  }, [fetchCourses, setIsUserLoggedIn, setUserAvatar, setUserDisplayName, setUserEmail])
 
   React.useEffect(() => {
     (async () => {
@@ -110,7 +118,7 @@ export const App = () => {
       setUserEmail(() => '')
       setUserAvatar(() => '')
     })
-  }, [handleAsyncAction])
+  }, [handleAsyncAction, setIsUserLoggedIn, setUserAvatar, setUserDisplayName, setUserEmail])
 
   const dismissError = React.useCallback(() => {
     setHasError(() => false)

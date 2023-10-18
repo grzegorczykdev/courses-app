@@ -6,13 +6,16 @@ import App from './App'
 import './index.css'
 import reportWebVitals from './reportWebVitals'
 import RouterContextProvider from './contexts/RouterContext'
+import UserContextProvider from './contexts/UserContext'
 
 const rootElement = document.getElementById('root')
 const root = ReactDOM.createRoot(rootElement)
 root.render(
-  <RouterContextProvider>
-    <App />
-  </RouterContextProvider>
+  <UserContextProvider>
+    <RouterContextProvider>
+      <App />
+    </RouterContextProvider>
+  </UserContextProvider>
 )
 
 // If you want to start measuring performance in your app, pass a function
