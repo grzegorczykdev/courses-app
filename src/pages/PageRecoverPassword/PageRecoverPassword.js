@@ -11,8 +11,8 @@ import isEmail from 'validator/lib/isEmail'
 export const PageRecoverPassword = (props) => {
   const {
     className,
-    onClickResetBackToLoginHandler,
-    onClickResetRecoverPasswordHandler: onClickRecoverFromProps,
+    onClickBackToLogin,
+    onClickRecover: onClickRecoverFromProps,
     ...otherProps
   } = props
 
@@ -20,7 +20,7 @@ export const PageRecoverPassword = (props) => {
   const [emailError, setEmailError] = React.useState(EMAIL_VALIDATION_ERROR)
   const [isSubmitted, setIsSubmitted] = React.useState(false)
 
-  const onClickResetRecoverPasswordHandler = React.useCallback(async () => {
+  const onClickRecover = React.useCallback(async () => {
     setIsSubmitted(() => true)
 
     if (emailError) return
@@ -44,8 +44,8 @@ export const PageRecoverPassword = (props) => {
           onChangeEmail={(e) => {
             setEmail(() => e.target.value)
           }}
-          onClickBackToLogin={onClickResetBackToLoginHandler}
-          onClickRecoverPassword={onClickResetRecoverPasswordHandler}
+          onClickBackToLogin={onClickBackToLogin}
+          onClickRecoverPassword={onClickRecover}
         />
       </FullPageLayout>
     </div>
@@ -54,8 +54,8 @@ export const PageRecoverPassword = (props) => {
 
 PageRecoverPassword.propTypes = {
   className: PropTypes.string,
-  onClickResetBackToLoginHandler: PropTypes.func,
-  onClickResetRecoverPasswordHandler: PropTypes.func
+  onClickBackToLogin: PropTypes.func,
+  onClickRecover: PropTypes.func
 }
 
 export default PageRecoverPassword

@@ -11,8 +11,8 @@ import isEmail from 'validator/lib/isEmail'
 export const PageCreateAccount = (props) => {
   const {
     className,
-    onClickCACreateAccountHandler: onClickCACreateAccountHandlerFromProps,
-    onClickCABackToLoginHandler,
+    onClickCreateAccount: onClickCreateAccountFromProps,
+    onClickBackToLogin,
     ...otherProps
   } = props
 
@@ -24,17 +24,17 @@ export const PageCreateAccount = (props) => {
   const [createAccountRepeatPasswordError, setCreateAccountRepeatPasswordError] = React.useState(REPEAT_PASSWORD_VALIDATION_ERROR)
   const [createAccountSubmitted, setCreateAccountSubmitted] = React.useState(false)
 
-  const onClickCACreateAccountHandler = React.useCallback(async () => {
+  const onClickCreateAccount = React.useCallback(async () => {
     setCreateAccountSubmitted(true)
 
     if (createAccountEmailError) return
     if (createAccountPasswordError) return
     if (createAccountRepeatPasswordError) return
 
-    onClickCACreateAccountHandlerFromProps(
+    onClickCreateAccountFromProps(
       createAccountEmail,
       createAccountPassword)
-  }, [createAccountEmail, createAccountEmailError, createAccountPassword, createAccountPasswordError, createAccountRepeatPasswordError, onClickCACreateAccountHandlerFromProps])
+  }, [createAccountEmail, createAccountEmailError, createAccountPassword, createAccountPasswordError, createAccountRepeatPasswordError, onClickCreateAccountFromProps])
 
   React.useEffect(() => {
     setCreateAccountEmailError(() => isEmail(createAccountEmail) ? '' : EMAIL_VALIDATION_ERROR)
@@ -61,8 +61,8 @@ export const PageCreateAccount = (props) => {
           onChangeEmail={(e) => setCreateAccountEmail(() => e.target.value)}
           onChangePassword={(e) => setCreateAccountPassword(() => e.target.value)}
           onChangeRepeatPassword={(e) => setCreateAccountRepeatPassword(() => e.target.value)}
-          onClickCreateAccount={onClickCACreateAccountHandler}
-          onClickBackToLogin={onClickCABackToLoginHandler}
+          onClickCreateAccount={onClickCreateAccount}
+          onClickBackToLogin={onClickBackToLogin}
         />
       </FullPageLayout>
     </div>
@@ -71,8 +71,8 @@ export const PageCreateAccount = (props) => {
 
 PageCreateAccount.propTypes = {
   className: PropTypes.string,
-  onClickCACreateAccountHandler: PropTypes.func,
-  onClickCABackToLoginHandler: PropTypes.func
+  onClickCreateAccount: PropTypes.func,
+  onClickBackToLogin: PropTypes.func
 }
 
 export default PageCreateAccount

@@ -12,8 +12,8 @@ import { EMAIL_VALIDATION_ERROR, PASSWORD_VALIDATION_ERROR } from '../../consts'
 export const PageLogin = (props) => {
   const {
     className,
-    onClickLoginCreateAccountHandler,
-    onClickLoginForgotPasswordHandler,
+    onClickCreateAccount,
+    onClickForgotPassword,
     onClickLogin: onClickLoginFromProps,
     ...otherProps
   } = props
@@ -53,8 +53,8 @@ export const PageLogin = (props) => {
           password={loginPassword}
           passwordError={loginSubmitted ? loginPasswordError : undefined}
           onClickLogin={onClickLogin}
-          onClickCreateAccount={onClickLoginCreateAccountHandler}
-          onClickForgotPassword={onClickLoginForgotPasswordHandler}
+          onClickCreateAccount={onClickCreateAccount}
+          onClickForgotPassword={onClickForgotPassword}
           onChangeEmail={(e) => {
             setLoginEmail(() => e.target.value)
           }}
@@ -70,8 +70,8 @@ export const PageLogin = (props) => {
 PageLogin.propTypes = {
   className: PropTypes.string,
   onClickLogin: PropTypes.func,
-  onClickLoginCreateAccountHandler: PropTypes.func,
-  onClickLoginForgotPasswordHandler: PropTypes.func
+  onClickCreateAccount: PropTypes.func,
+  onClickForgotPassword: PropTypes.func
 }
 
 export default PageLogin

@@ -75,7 +75,7 @@ export const App = () => {
     })
   }, [handleAsyncAction, onUserLogged])
 
-  const onClickCACreateAccountHandler = React.useCallback(async (email, password) => {
+  const onClickCreateAccount = React.useCallback(async (email, password) => {
     handleAsyncAction(async () => {
       await signUp(email, password)
       setIsInfoDisplayed(() => true)
@@ -84,7 +84,7 @@ export const App = () => {
     })
   }, [handleAsyncAction, onUserLogged])
 
-  const onClickResetRecoverPasswordHandler = React.useCallback(async (email) => {
+  const onClickRecover = React.useCallback(async (email) => {
     handleAsyncAction(async () => {
       await sendPasswordResetEmail(email)
       setIsInfoDisplayed(() => true)
@@ -93,11 +93,11 @@ export const App = () => {
     })
   }, [handleAsyncAction, onUserLogged])
 
-  const onUserDropdownProfileClick = () => {
+  const onClickProfile = () => {
     console.log('2')
   }
 
-  const onUserDropdownLogOutClick = React.useCallback(async () => {
+  const onClickLogOut = React.useCallback(async () => {
     handleAsyncAction(async () => {
       await logOut()
       setIsUserLoggedIn(() => false)
@@ -127,25 +127,25 @@ export const App = () => {
                 userDisplayName={userDisplayName}
                 userEmail={userEmail}
                 userAvatar={userAvatar}
-                onUserDropdownProfileClick={onUserDropdownProfileClick}
-                onUserDropdownLogOutClick={onUserDropdownLogOutClick}
+                onClickProfile={onClickProfile}
+                onClickLogOut={onClickLogOut}
               />
             :
             notLoginUserRoute === 'LOGIN' ?
               <PageLogin
                 onClickLogin={onClickLogin}
-                onClickLoginCreateAccountHandler={() => { setNotLoginUserRoute(() => 'CREATE-ACCOUNT') }}
-                onClickLoginForgotPasswordHandler={() => { setNotLoginUserRoute(() => 'FORGOT-PASSWORD') }}
+                onClickCreateAccount={() => { setNotLoginUserRoute(() => 'CREATE-ACCOUNT') }}
+                onClickForgotPassword={() => { setNotLoginUserRoute(() => 'FORGOT-PASSWORD') }}
               />
               : notLoginUserRoute === 'CREATE-ACCOUNT' ?
                 <PageCreateAccount
-                  onClickCACreateAccountHandler={onClickCACreateAccountHandler}
-                  onClickCABackToLoginHandler={() => { setNotLoginUserRoute(() => 'LOGIN') }}
+                  onClickCreateAccount={onClickCreateAccount}
+                  onClickBackToLogin={() => { setNotLoginUserRoute(() => 'LOGIN') }}
                 />
                 : notLoginUserRoute === 'FORGOT-PASSWORD' ?
                   <PageRecoverPassword
-                    onClickResetRecoverPasswordHandler={onClickResetRecoverPasswordHandler}
-                    onClickResetBackToLoginHandler={() => { setNotLoginUserRoute(() => 'LOGIN') }}
+                    onClickRecover={onClickRecover}
+                    onClickBackToLogin={() => { setNotLoginUserRoute(() => 'LOGIN') }}
                   />
                   :
                   null}

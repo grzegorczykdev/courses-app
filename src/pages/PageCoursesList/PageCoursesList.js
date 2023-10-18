@@ -20,8 +20,8 @@ export const PageCoursesList = (props) => {
     userDisplayName,
     userEmail,
     userAvatar,
-    onUserDropdownProfileClick,
-    onUserDropdownLogOutClick,
+    onClickProfile,
+    onClickLogOut,
     ...otherProps
   } = props
 
@@ -56,12 +56,12 @@ export const PageCoursesList = (props) => {
                     icon={'profile'}
                     text={'Profile'}
                     disabled={true}
-                    onClick={onUserDropdownProfileClick}
+                    onClick={onClickProfile}
                   />
                   <ListItem
                     icon={'log-out'}
                     text={'Log out'}
-                    onClick={onUserDropdownLogOutClick}
+                    onClick={onClickLogOut}
                   />
                 </List>
                 : null}
@@ -97,8 +97,8 @@ export const PageCoursesList = (props) => {
 PageCoursesList.propTypes = {
   className: PropTypes.string,
   courses: PropTypes.arrayOf(CoursePropType),
-  onUserDropdownProfileClick: PropTypes.func,
-  onUserDropdownLogOutClick: PropTypes.func,
+  onClickProfile: PropTypes.func,
+  onClickLogOut: PropTypes.func,
   userDisplayName: PropTypes.string,
   userEmail: PropTypes.string,
   userAvatar: PropTypes.string
