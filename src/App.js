@@ -1,17 +1,20 @@
 import React from 'react'
 
-import FullPageLoader from './components/FullPageLoader'
-import FullPageMessage from './components/FullPageMessage'
-
 import FullPageLayout from './components/FullPageLayout'
+import FullPageMessage from './components/FullPageMessage'
+import FullPageLoader from './components/FullPageLoader'
 import Message from './components/Message'
 
-import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
-import { getAll as getAllCourses } from './api/courses'
 import PageCoursesList from './pages/PageCoursesList/PageCoursesList'
 import PageLogin from './pages/PageLogin/PageLogin'
 import PageCreateAccount from './pages/PageCreateAccount/PageCreateAccount'
 import PageRecoverPassword from './pages/PageRecoverPassword/PageRecoverPassword'
+
+import { RouterContext } from './contexts/RouterContext'
+
+import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
+
+import { getAll as getAllCourses } from './api/courses'
 
 export const App = () => {
   const [isLoading, setIsLoading] = React.useState(false)
@@ -23,8 +26,10 @@ export const App = () => {
   const [userDisplayName, setUserDisplayName] = React.useState('')
   const [userEmail, setUserEmail] = React.useState('')
   const [userAvatar, setUserAvatar] = React.useState('')
-  // 'LOGIN, 'CREATE-ACCOUNT', 'FORGOT-PASSWORD'
-  const [notLoginUserRoute, setNotLoginUserRoute] = React.useState('LOGIN')
+
+  // router state
+  const { route: notLoginUserRoute, setRoute: setNotLoginUserRoute } = React.useContext(RouterContext)
+
   const [courses, setCourses] = React.useState(null)
 
   const handleAsyncAction = React.useCallback(async (asyncAction) => {
