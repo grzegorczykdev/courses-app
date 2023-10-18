@@ -13,106 +13,92 @@ import TextField from '../../components/TextField'
 import classes from './styles.module.css'
 import { CoursePropType } from '../../components/CourseCard'
 
-export class PageCoursesList extends React.Component {
-  state = {
-    searchPhrase: '',
-    isUserDropdownOpen: false
+export const PageCoursesList = (props) => {
+  const {
+    className,
+    courses,
+    userDisplayName,
+    userEmail,
+    userAvatar,
+    onUserDropdownProfileClick,
+    onUserDropdownLogOutClick,
+    ...otherProps
+  } = props
+
+  const [searchPhrase, setSearchPhrase] = React.useState('')
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = React.useState('')
+
+  const onChangeSearchPhraseHandler = (e) => {
+    setSearchPhrase(() => e.target.value)
   }
 
-  onChangeSearchPhraseHandler = (e) => {
-    this.setState(() => ({
-      searchPhrase: e.target.value
-    }))
-  }
-
-  userDropdownCloseRequestHandler = () => {
-    this.setState(() => ({
-      isUserDropdownOpen: false
-    }))
+  const userDropdownCloseRequestHandler = () => {
+    setIsUserDropdownOpen(() => false)
   }
 
   // User dropdown
-  userDropdownOpenRequestHandler = () => {
-    this.setState(() => ({
-      isUserDropdownOpen: true
-    }))
+  const userDropdownOpenRequestHandler = () => {
+    setIsUserDropdownOpen(() => true)
   }
 
-  render () {
-    const {
-      className,
-      courses,
-      userDisplayName,
-      userEmail,
-      userAvatar,
-      onUserDropdownProfileClick,
-      onUserDropdownLogOutClick,
-      ...otherProps
-    } = this.props
-
-    const {
-      searchPhrase,
-      isUserDropdownOpen
-
-    } = this.state
-
-    const filteredCourses = courses && courses.filter((course) => {
+  const filteredCourses = React.useMemo(() =>
+    courses && courses.filter((course) => {
       return (course.category).toLowerCase().includes(searchPhrase.toLowerCase()) ||
         (course.description).toLowerCase().includes(searchPhrase.toLowerCase()) ||
         (course.title).toLowerCase().includes(searchPhrase.toLowerCase())
     })
+  , [courses, searchPhrase])
 
-    return (
-      <div
-        className={`${classes.root}${className ? ` ${className}` : ''}`}
-        {...otherProps}
-      >
-        <MainLayout
-          contentAppBar={
-            <>
-              <Logo className={classes.logo}/>
-              <UserDropdown
-                userDisplayName={userDisplayName}
-                userEmail={userEmail}
-                userAvatar={userAvatar}
-                className={classes.userDropdown}
-                contentList={isUserDropdownOpen ?
-                  <List>
-                    <ListItem
-                      icon={'profile'}
-                      text={'Profile'}
-                      disabled={true}
-                      onClick={onUserDropdownProfileClick}
-                    />
-                    <ListItem
-                      icon={'log-out'}
-                      text={'Log out'}
-                      onClick={onUserDropdownLogOutClick}
-                    />
-                  </List>
-                  : null}
-                onOpenRequested={this.userDropdownOpenRequestHandler}
-                onCloseRequested={this.userDropdownCloseRequestHandler}
-              />
-            </>
-                  }
-
-          contentSearch={
-            <TextField
-              value={searchPhrase}
-              onChange={this.onChangeSearchPhraseHandler}
-              className={classes.searchTextField}
-              placeholder={'Type to search'}
+  return (
+    <div
+      className={`${classes.root}${className ? ` ${className}` : ''}`}
+      {...otherProps}
+    >
+      <MainLayout
+        contentAppBar={
+          <>
+            <Logo className={classes.logo}/>
+            <UserDropdown
+              userDisplayName={userDisplayName}
+              userEmail={userEmail}
+              userAvatar={userAvatar}
+              className={classes.userDropdown}
+              contentList={isUserDropdownOpen ?
+                <List>
+                  <ListItem
+                    icon={'profile'}
+                    text={'Profile'}
+                    disabled={true}
+                    onClick={onUserDropdownProfileClick}
+                  />
+                  <ListItem
+                    icon={'log-out'}
+                    text={'Log out'}
+                    onClick={onUserDropdownLogOutClick}
+                  />
+                </List>
+                : null}
+              onOpenRequested={userDropdownOpenRequestHandler}
+              onCloseRequested={userDropdownCloseRequestHandler}
             />
+          </>
                   }
 
-          contentMain={
-            <CoursesList courses={filteredCourses}/>
+        contentSearch={
+          <TextField
+            value={searchPhrase}
+            onChange={onChangeSearchPhraseHandler}
+            className={classes.searchTextField}
+            placeholder={'Type to search'}
+          />
                   }
-        />
-      </div>
-    )
-  }
+
+        contentMain={
+          <CoursesList courses={filteredCourses}/>
+                  }
+      />
+    </div>
+  )
 }
 
 PageCoursesList.propTypes = {
