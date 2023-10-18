@@ -1,0 +1,45 @@
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.courseCardWrapper {
+  flex-basis: 33.3333%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.thirdLeft {
+  justify-content: flex-start;
+}
+
+.thirdRight {
+  justify-content: flex-end;
+}
+
+.typography {
+  width: 100%;
+  text-align: center;
+}
+
+@media (max-width: 1024px) {
+  .courseCardWrapper {
+    flex-basis: 50%;
+  }
+
+  .thirdLeft {
+    justify-content: center;
+  }
+
+  .thirdRight {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 700px) {
+  .courseCardWrapper {
+    flex-basis: 100%;
+  }
+}

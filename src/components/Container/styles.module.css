@@ -1,0 +1,16 @@
+.root {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  max-width: 1024px;
+  width: 100%;
+  justify-content: space-between;
+  padding-inline: 12px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1024px) {
+  .root {
+    box-sizing: border-box;
+  }
+}

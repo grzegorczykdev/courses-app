@@ -1,0 +1,56 @@
+.root {
+  height: 30px;
+  border-radius: 4px;
+  outline: none;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px 10px 4px 10px;
+  transition: background-color 0.35s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contained {
+  color: white;
+  box-shadow: 0px 1px 5px 0px #0000001F, 0px 2px 2px 0px #00000024, 0px 3px 1px -2px #00000033;
+}
+
+.contained.primary {
+  background: #323330;
+}
+
+.contained.primary:hover {
+  background: #5b5c59;
+}
+
+.contained.secondary {
+  background: #F0DB4F;
+}
+
+.contained.secondary:hover {
+  background: #f3e272;
+}
+
+.text.primary:hover {
+  background-color: #eaeae9;
+}
+
+.text.secondary:hover {
+  background-color: #fcf8dc;
+}
+
+.contained.primary.disabled,
+.contained.secondary.disabled,
+.contained.text.disabled,
+.disabled {
+  background-color: rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.26);
+  box-shadow: none;
+  cursor: default;
+}
+
+.iconWrapper {
+  margin-right: 8px;
+}

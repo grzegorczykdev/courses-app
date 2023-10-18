@@ -1,0 +1,33 @@
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.15000000596046448px;
+  text-align: left;
+  color: rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  height: 40px;
+  padding: 0px 12px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input.hasError {
+  border: 1px solid red;
+}
+
+.errorMessage {
+  width: 100%;
+  color: red;
+  padding: 0px 12px;
+  font-size: 11px;
+  margin-top: 4px;
+}

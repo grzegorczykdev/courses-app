@@ -1,0 +1,22 @@
+.root {
+  display: flex;
+  height: 36px;
+  align-items: center;
+  box-sizing: border-box;
+  padding-inline: 20px;
+  cursor: pointer;
+}
+
+.root:hover {
+  background-color: #ebebea;
+}
+
+.iconWrapper {
+  margin-right: 36px;
+}
+
+.disabled {
+  cursor: auto;
+  color: rgba(0, 0, 0, 0.38);
+  pointer-events: none;
+}
