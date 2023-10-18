@@ -10,16 +10,15 @@ import List from '../../components/List/List'
 import MainLayout from '../../components/MainLayout/MainLayout'
 import TextField from '../../components/TextField'
 
-import classes from './styles.module.css'
 import { CoursePropType } from '../../components/CourseCard'
+import { useAuthUser } from '../../contexts/UserContext'
+
+import classes from './styles.module.css'
 
 export const PageCoursesList = (props) => {
   const {
     className,
     courses,
-    userDisplayName,
-    userEmail,
-    userAvatar,
     onClickProfile,
     onClickLogOut,
     ...otherProps
@@ -27,6 +26,12 @@ export const PageCoursesList = (props) => {
 
   const [searchPhrase, setSearchPhrase] = React.useState('')
   const [isUserDropdownOpen, setIsUserDropdownOpen] = React.useState('')
+
+  const {
+    userDisplayName,
+    userEmail,
+    userAvatar
+  } = useAuthUser()
 
   const filteredCourses = React.useMemo(() =>
     courses && courses.filter((course) => {
@@ -98,10 +103,7 @@ PageCoursesList.propTypes = {
   className: PropTypes.string,
   courses: PropTypes.arrayOf(CoursePropType),
   onClickProfile: PropTypes.func,
-  onClickLogOut: PropTypes.func,
-  userDisplayName: PropTypes.string,
-  userEmail: PropTypes.string,
-  userAvatar: PropTypes.string
+  onClickLogOut: PropTypes.func
 }
 
 export default PageCoursesList
