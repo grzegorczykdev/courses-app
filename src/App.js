@@ -29,7 +29,7 @@ export class App extends React.Component {
     userAvatar: '',
 
     // router state
-    notLoginUserRoute: 'LOGIN', // 'LOGIN, 'CREATE-ACCOUNT', 'FORGOT-PASSWORD'
+    notLoginUserRoute: 'FORGOT-PASSWORD', // 'LOGIN, 'CREATE-ACCOUNT', 'FORGOT-PASSWORD'
 
     // courses
     courses: null
@@ -84,8 +84,9 @@ export class App extends React.Component {
       await sendPasswordResetEmail(email)
       this.setState(() => ({
         isInfoDisplayed: true,
-        infoMessage: 'Check your inbox'
+        infoMessage: 'Check your inbox!'
       }))
+      this.onUserLogged()
     })
   }
 

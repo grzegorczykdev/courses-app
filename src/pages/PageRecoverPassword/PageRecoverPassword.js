@@ -8,57 +8,50 @@ import RecoverPasswordForm from '../../components/RecoverPasswordForm'
 
 import isEmail from 'validator/lib/isEmail'
 
-export class PageRecoverPassword extends React.Component {
-  state = {
-    recoverPasswordEmail: '',
-    recoverPasswordEmailError: EMAIL_VALIDATION_ERROR,
-    recoverPasswordSubmitted: false
-  }
+export const PageRecoverPassword = (props) => {
+  const {
+    className,
+    onClickResetBackToLoginHandler,
+    onClickResetRecoverPasswordHandler: onClickRecoverFromProps,
+    ...otherProps
+  } = props
 
-  onChangeResetEmailHandler = (e) => this.setState(() => ({
-    recoverPasswordEmail: e.target.value,
-    recoverPasswordEmailError: isEmail(e.target.value) ? '' : EMAIL_VALIDATION_ERROR
-  }))
+  const [email, setEmail] = React.useState('')
+  const [emailError, setEmailError] = React.useState(EMAIL_VALIDATION_ERROR)
+  const [isSubmitted, setIsSubmitted] = React.useState(false)
 
-  onClickResetRecoverPasswordHandler = async () => {
-    this.setState(() => ({ recoverPasswordSubmitted: true }))
+  const onChangeResetEmailHandler = React.useCallback((e) => {
+    setEmail(() => e.target.value)
+  }, [])
 
-    if (this.state.recoverPasswordEmailError) return
+  const onClickResetRecoverPasswordHandler = React.useCallback(async () => {
+    setIsSubmitted(() => true)
 
-    this.props.onClickResetRecoverPasswordHandler(this.state.recoverPasswordEmail)
-  }
+    if (emailError) return
 
-  render () {
-    const {
-      className,
-      onClickResetBackToLoginHandler,
-      onClickResetRecoverPasswordHandler,
-      ...otherProps
-    } = this.props
+    onClickRecoverFromProps(email)
+  }, [email, emailError, onClickRecoverFromProps])
 
-    const {
-      recoverPasswordSubmitted,
-      recoverPasswordEmailError,
-      recoverPasswordEmail
-    } = this.state
+  React.useEffect(() => {
+    setEmailError(() => isEmail(email) ? '' : EMAIL_VALIDATION_ERROR)
+  }, [email])
 
-    return (
-      <div
-        className={`${classes.root}${className ? ` ${className}` : ''}`}
-        {...otherProps}
-      >
-        <FullPageLayout>
-          <RecoverPasswordForm
-            recoverPasswordEmail={recoverPasswordEmail}
-            recoverPasswordEmailError={recoverPasswordSubmitted ? recoverPasswordEmailError : undefined}
-            onChangeEmail={this.onChangeResetEmailHandler}
-            onClickBackToLogin={onClickResetBackToLoginHandler}
-            onClickRecoverPassword={this.onClickResetRecoverPasswordHandler}
-          />
-        </FullPageLayout>
-      </div>
-    )
-  }
+  return (
+    <div
+      className={`${classes.root}${className ? ` ${className}` : ''}`}
+      {...otherProps}
+    >
+      <FullPageLayout>
+        <RecoverPasswordForm
+          email={email}
+          emailError={isSubmitted ? emailError : undefined}
+          onChangeEmail={onChangeResetEmailHandler}
+          onClickBackToLogin={onClickResetBackToLoginHandler}
+          onClickRecoverPassword={onClickResetRecoverPasswordHandler}
+        />
+      </FullPageLayout>
+    </div>
+  )
 }
 
 PageRecoverPassword.propTypes = {

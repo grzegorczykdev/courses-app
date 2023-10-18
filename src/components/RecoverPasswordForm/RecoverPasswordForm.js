@@ -13,9 +13,10 @@ export const RecoverPasswordForm = (props) => {
     className,
     onClickRecoverPassword,
     onClickBackToLogin,
-    recoverPasswordEmail,
-    recoverPasswordEmailError,
+    email,
+    emailError,
     onChangeEmail,
+
     ...otherProps
   } = props
 
@@ -31,8 +32,8 @@ export const RecoverPasswordForm = (props) => {
       >Recover password
       </Typography>
       <TextField
-        errorMessage={recoverPasswordEmailError}
-        value={recoverPasswordEmail}
+        errorMessage={emailError}
+        value={email}
         onChange={onChangeEmail}
         className={classes.textField}
         placeholder={'E-mail'}
@@ -59,9 +60,9 @@ RecoverPasswordForm.propTypes = {
   className: PropTypes.string,
   onClickRecoverPassword: PropTypes.func.isRequired,
   onClickBackToLogin: PropTypes.func.isRequired,
-  recoverPasswordEmail: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
   onChangeEmail: PropTypes.func.isRequired,
-  recoverPasswordEmailError: PropTypes.string
+  emailError: PropTypes.string
 }
 
 export default RecoverPasswordForm
