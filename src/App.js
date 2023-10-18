@@ -28,7 +28,7 @@ export const App = () => {
   const [userAvatar, setUserAvatar] = React.useState('')
 
   // router state
-  const { route: notLoginUserRoute, setRoute: setNotLoginUserRoute } = React.useContext(RouterContext)
+  const { route: notLoginUserRoute } = React.useContext(RouterContext)
 
   const [courses, setCourses] = React.useState(null)
 
@@ -139,18 +139,14 @@ export const App = () => {
             notLoginUserRoute === 'LOGIN' ?
               <PageLogin
                 onClickLogin={onClickLogin}
-                onClickCreateAccount={() => { setNotLoginUserRoute(() => 'CREATE-ACCOUNT') }}
-                onClickForgotPassword={() => { setNotLoginUserRoute(() => 'FORGOT-PASSWORD') }}
               />
               : notLoginUserRoute === 'CREATE-ACCOUNT' ?
                 <PageCreateAccount
                   onClickCreateAccount={onClickCreateAccount}
-                  onClickBackToLogin={() => { setNotLoginUserRoute(() => 'LOGIN') }}
                 />
                 : notLoginUserRoute === 'FORGOT-PASSWORD' ?
                   <PageRecoverPassword
                     onClickRecover={onClickRecover}
-                    onClickBackToLogin={() => { setNotLoginUserRoute(() => 'LOGIN') }}
                   />
                   :
                   null}

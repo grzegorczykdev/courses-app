@@ -8,12 +8,13 @@ import LoginForm from '../../components/LoginForm'
 import isEmail from 'validator/lib/isEmail'
 
 import { EMAIL_VALIDATION_ERROR, PASSWORD_VALIDATION_ERROR } from '../../consts'
+import { RouterContext } from '../../contexts/RouterContext'
 
 export const PageLogin = (props) => {
   const {
     className,
-    onClickCreateAccount,
-    onClickForgotPassword,
+    // onClickCreateAccount,
+    // onClickForgotPassword,
     onClickLogin: onClickLoginFromProps,
     ...otherProps
   } = props
@@ -23,6 +24,16 @@ export const PageLogin = (props) => {
   const [loginPassword, setLoginPassword] = React.useState('')
   const [loginPasswordError, setLoginPasswordError] = React.useState(PASSWORD_VALIDATION_ERROR)
   const [loginSubmitted, setLoginSubmitted] = React.useState(false)
+
+  const { setRoute } = React.useContext(RouterContext)
+
+  const onClickCreateAccount = React.useCallback(() => {
+    setRoute(() => 'CREATE-ACCOUNT')
+  }, [setRoute])
+
+  const onClickForgotPassword = React.useCallback(() => {
+    setRoute(() => 'FORGOT-PASSWORD')
+  }, [setRoute])
 
   const onClickLogin = React.useCallback(async () => {
     setLoginSubmitted(true)
@@ -69,9 +80,9 @@ export const PageLogin = (props) => {
 
 PageLogin.propTypes = {
   className: PropTypes.string,
-  onClickLogin: PropTypes.func,
-  onClickCreateAccount: PropTypes.func,
-  onClickForgotPassword: PropTypes.func
+  onClickLogin: PropTypes.func
+  // onClickCreateAccount: PropTypes.func,
+  // onClickForgotPassword: PropTypes.func
 }
 
 export default PageLogin
