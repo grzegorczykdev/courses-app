@@ -46,6 +46,7 @@ export class PageLogin extends React.Component {
       className,
       onClickLoginCreateAccountHandler,
       onClickLoginForgotPasswordHandler,
+      onClickLogin,
       ...otherProps
     } = this.props
 
