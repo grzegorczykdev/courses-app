@@ -13,7 +13,9 @@ const initialContextState = {
   setIsUserLoggedIn: errorProviderNotFount,
   setUserDisplayName: errorProviderNotFount,
   setUserEmail: errorProviderNotFount,
-  setUserAvatar: errorProviderNotFount
+  setUserAvatar: errorProviderNotFount,
+  clearUser: errorProviderNotFount,
+  setUser: errorProviderNotFount
 }
 
 // 'LOGIN, 'CREATE-ACCOUNT', 'FORGOT-PASSWORD'
@@ -32,6 +34,20 @@ export const UserContextProvider = (props) => {
   const [userEmail, setUserEmail] = React.useState(initialContextState.userEmail)
   const [userAvatar, setUserAvatar] = React.useState(initialContextState.userAvatar)
 
+  const clearUser = React.useCallback(() => {
+    setIsUserLoggedIn(() => false)
+    setUserDisplayName(() => '')
+    setUserEmail(() => '')
+    setUserAvatar(() => '')
+  }, [])
+
+  const setUser = React.useCallback((user) => {
+    setIsUserLoggedIn(() => true)
+    user.userDisplayName && setUserDisplayName(() => user.userDisplayName)
+    user.userEmail && setUserEmail(() => user.userEmail)
+    user.userAvatar && setUserAvatar(() => user.userAvatar)
+  }, [])
+
   return (
     <UserContext.Provider
       value={{
@@ -39,10 +55,8 @@ export const UserContextProvider = (props) => {
         userDisplayName,
         userEmail,
         userAvatar,
-        setIsUserLoggedIn,
-        setUserDisplayName,
-        setUserEmail,
-        setUserAvatar
+        clearUser,
+        setUser
       }}
     >
       {children}
