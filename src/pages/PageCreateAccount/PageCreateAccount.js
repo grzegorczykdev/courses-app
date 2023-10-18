@@ -8,87 +8,65 @@ import { EMAIL_VALIDATION_ERROR, PASSWORD_VALIDATION_ERROR, REPEAT_PASSWORD_VALI
 
 import isEmail from 'validator/lib/isEmail'
 
-export class PageCreateAccount extends React.Component {
-  state = {
-    createAccountEmail: '',
-    createAccountEmailError: EMAIL_VALIDATION_ERROR,
-    createAccountPassword: '',
-    createAccountPasswordError: PASSWORD_VALIDATION_ERROR,
-    createAccountRepeatPassword: '',
-    createAccountRepeatPasswordError: REPEAT_PASSWORD_VALIDATION_ERROR,
-    createAccountSubmitted: false
-  }
+export const PageCreateAccount = (props) => {
+  const {
+    className,
+    onClickCACreateAccountHandler: onClickCACreateAccountHandlerFromProps,
+    onClickCABackToLoginHandler,
+    ...otherProps
+  } = props
 
-  onChangeCAEmailHandler = (e) => this.setState(() => ({
-    createAccountEmail: e.target.value,
-    createAccountEmailError: isEmail(e.target.value) ? '' : EMAIL_VALIDATION_ERROR
-  }))
+  const [createAccountEmail, setCreateAccountEmail] = React.useState('')
+  const [createAccountEmailError, setCreateAccountEmailError] = React.useState(EMAIL_VALIDATION_ERROR)
+  const [createAccountPassword, setCreateAccountPassword] = React.useState('')
+  const [createAccountPasswordError, setCreateAccountPasswordError] = React.useState(PASSWORD_VALIDATION_ERROR)
+  const [createAccountRepeatPassword, setCreateAccountRepeatPassword] = React.useState('')
+  const [createAccountRepeatPasswordError, setCreateAccountRepeatPasswordError] = React.useState(REPEAT_PASSWORD_VALIDATION_ERROR)
+  const [createAccountSubmitted, setCreateAccountSubmitted] = React.useState(false)
 
-  onChangeCACreateAccountPasswordHandler = (e) => this.setState(() => ({
-    createAccountPassword: e.target.value,
-    createAccountPasswordError: e.target.value.length >= 6 ? '' : PASSWORD_VALIDATION_ERROR
-  }))
+  const onClickCACreateAccountHandler = React.useCallback(async () => {
+    setCreateAccountSubmitted(true)
 
-  onChangeCARepeatPasswordHandler = (e) => {
-    this.setState(() => ({
-      createAccountRepeatPassword: e.target.value,
-      createAccountRepeatPasswordError: e.target.value === this.state.createAccountPassword ? '' : REPEAT_PASSWORD_VALIDATION_ERROR
-    }))
-  }
+    if (createAccountEmailError) return
+    if (createAccountPasswordError) return
+    if (createAccountRepeatPasswordError) return
 
-  onClickCACreateAccountHandler = async () => {
-    this.setState(() => ({ createAccountSubmitted: true }))
-
-    if (this.state.createAccountEmailError) return
-    if (this.state.createAccountPasswordError) return
-    if (this.state.createAccountRepeatPasswordError) return
-
-    this.props.onClickCACreateAccountHandler(
-      this.state.createAccountEmail,
-      this.state.createAccountPassword)
-  }
-
-  render () {
-    const {
-      className,
-      onClickCACreateAccountHandler,
-      onClickCABackToLoginHandler,
-      ...otherProps
-    } = this.props
-
-    const {
+    onClickCACreateAccountHandlerFromProps(
       createAccountEmail,
-      createAccountEmailError,
-      createAccountPassword,
-      createAccountPasswordError,
-      createAccountRepeatPassword,
-      createAccountRepeatPasswordError,
-      createAccountSubmitted
-    } = this.state
+      createAccountPassword)
+  }, [createAccountEmail, createAccountEmailError, createAccountPassword, createAccountPasswordError, createAccountRepeatPasswordError, onClickCACreateAccountHandlerFromProps])
 
-    return (
-      <div
-        className={`${classes.root}${className ? ` ${className}` : ''}`}
-        {...otherProps}
-      >
-        <FullPageLayout>
-          <CreateAccountForm
-            createAccountEmail={createAccountEmail}
-            createAccountEmailError={createAccountSubmitted ? createAccountEmailError : undefined}
-            createAccountPassword={createAccountPassword}
-            createAccountPasswordError={createAccountSubmitted ? createAccountPasswordError : undefined}
-            createAccountRepeatPassword={createAccountRepeatPassword}
-            createAccountRepeatPasswordError={createAccountSubmitted ? createAccountRepeatPasswordError : undefined}
-            onChangeEmail={this.onChangeCAEmailHandler}
-            onChangePassword={this.onChangeCACreateAccountPasswordHandler}
-            onChangeRepeatPassword={this.onChangeCARepeatPasswordHandler}
-            onClickCreateAccount={this.onClickCACreateAccountHandler}
-            onClickBackToLogin={onClickCABackToLoginHandler}
-          />
-        </FullPageLayout>
-      </div>
-    )
-  }
+  React.useEffect(() => {
+    setCreateAccountEmailError(() => isEmail(createAccountEmail) ? '' : EMAIL_VALIDATION_ERROR)
+  }, [createAccountEmail])
+
+  React.useEffect(() => {
+    setCreateAccountPasswordError(createAccountPassword.length >= 6 ? '' : PASSWORD_VALIDATION_ERROR)
+    setCreateAccountRepeatPasswordError(createAccountRepeatPassword === createAccountPassword ? '' : REPEAT_PASSWORD_VALIDATION_ERROR)
+  }, [createAccountPassword, createAccountRepeatPassword])
+
+  return (
+    <div
+      className={`${classes.root}${className ? ` ${className}` : ''}`}
+      {...otherProps}
+    >
+      <FullPageLayout>
+        <CreateAccountForm
+          createAccountEmail={createAccountEmail}
+          createAccountEmailError={createAccountSubmitted ? createAccountEmailError : undefined}
+          createAccountPassword={createAccountPassword}
+          createAccountPasswordError={createAccountSubmitted ? createAccountPasswordError : undefined}
+          createAccountRepeatPassword={createAccountRepeatPassword}
+          createAccountRepeatPasswordError={createAccountSubmitted ? createAccountRepeatPasswordError : undefined}
+          onChangeEmail={(e) => setCreateAccountEmail(() => e.target.value)}
+          onChangePassword={(e) => setCreateAccountPassword(() => e.target.value)}
+          onChangeRepeatPassword={(e) => setCreateAccountRepeatPassword(() => e.target.value)}
+          onClickCreateAccount={onClickCACreateAccountHandler}
+          onClickBackToLogin={onClickCABackToLoginHandler}
+        />
+      </FullPageLayout>
+    </div>
+  )
 }
 
 PageCreateAccount.propTypes = {
