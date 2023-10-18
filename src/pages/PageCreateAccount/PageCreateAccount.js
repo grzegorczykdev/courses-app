@@ -7,7 +7,7 @@ import CreateAccountForm from '../../components/CreateAccountForm'
 import { EMAIL_VALIDATION_ERROR, PASSWORD_VALIDATION_ERROR, REPEAT_PASSWORD_VALIDATION_ERROR } from '../../consts'
 
 import isEmail from 'validator/lib/isEmail'
-import { RouterContext } from '../../contexts/RouterContext'
+import { useRouteTo } from '../../contexts/RouterContext'
 
 export const PageCreateAccount = (props) => {
   const {
@@ -25,11 +25,11 @@ export const PageCreateAccount = (props) => {
   const [createAccountRepeatPasswordError, setCreateAccountRepeatPasswordError] = React.useState(REPEAT_PASSWORD_VALIDATION_ERROR)
   const [createAccountSubmitted, setCreateAccountSubmitted] = React.useState(false)
 
-  const { setRoute } = React.useContext(RouterContext)
+  const routeTo = useRouteTo()
 
   const onClickBackToLogin = React.useCallback(() => {
-    setRoute(() => 'LOGIN')
-  }, [setRoute])
+    routeTo(() => 'LOGIN')
+  }, [routeTo])
 
   const onClickCreateAccount = React.useCallback(async () => {
     setCreateAccountSubmitted(true)

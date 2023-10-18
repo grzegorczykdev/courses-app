@@ -7,7 +7,7 @@ import FullPageLayout from '../../components/FullPageLayout'
 import RecoverPasswordForm from '../../components/RecoverPasswordForm'
 
 import isEmail from 'validator/lib/isEmail'
-import { RouterContext } from '../../contexts/RouterContext'
+import { useRouteTo } from '../../contexts/RouterContext'
 
 export const PageRecoverPassword = (props) => {
   const {
@@ -21,11 +21,11 @@ export const PageRecoverPassword = (props) => {
   const [emailError, setEmailError] = React.useState(EMAIL_VALIDATION_ERROR)
   const [isSubmitted, setIsSubmitted] = React.useState(false)
 
-  const { setRoute } = React.useContext(RouterContext)
+  const routeTo = useRouteTo()
 
   const onClickBackToLogin = React.useCallback(() => {
-    setRoute(() => 'LOGIN')
-  }, [setRoute])
+    routeTo(() => 'LOGIN')
+  }, [routeTo])
 
   const onClickRecover = React.useCallback(async () => {
     setIsSubmitted(() => true)

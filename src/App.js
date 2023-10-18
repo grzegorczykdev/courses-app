@@ -10,7 +10,7 @@ import PageLogin from './pages/PageLogin/PageLogin'
 import PageCreateAccount from './pages/PageCreateAccount/PageCreateAccount'
 import PageRecoverPassword from './pages/PageRecoverPassword/PageRecoverPassword'
 
-import { RouterContext } from './contexts/RouterContext'
+import { useRoute } from './contexts/RouterContext'
 
 import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
 
@@ -28,7 +28,7 @@ export const App = () => {
   const [userAvatar, setUserAvatar] = React.useState('')
 
   // router state
-  const { route: notLoginUserRoute } = React.useContext(RouterContext)
+  const notLoginUserRoute = useRoute()
 
   const [courses, setCourses] = React.useState(null)
 

@@ -8,7 +8,7 @@ import LoginForm from '../../components/LoginForm'
 import isEmail from 'validator/lib/isEmail'
 
 import { EMAIL_VALIDATION_ERROR, PASSWORD_VALIDATION_ERROR } from '../../consts'
-import { RouterContext } from '../../contexts/RouterContext'
+import { useRouteTo } from '../../contexts/RouterContext'
 
 export const PageLogin = (props) => {
   const {
@@ -25,15 +25,15 @@ export const PageLogin = (props) => {
   const [loginPasswordError, setLoginPasswordError] = React.useState(PASSWORD_VALIDATION_ERROR)
   const [loginSubmitted, setLoginSubmitted] = React.useState(false)
 
-  const { setRoute } = React.useContext(RouterContext)
+  const routeTo = useRouteTo()
 
   const onClickCreateAccount = React.useCallback(() => {
-    setRoute(() => 'CREATE-ACCOUNT')
-  }, [setRoute])
+    routeTo(() => 'CREATE-ACCOUNT')
+  }, [routeTo])
 
   const onClickForgotPassword = React.useCallback(() => {
-    setRoute(() => 'FORGOT-PASSWORD')
-  }, [setRoute])
+    routeTo(() => 'FORGOT-PASSWORD')
+  }, [routeTo])
 
   const onClickLogin = React.useCallback(async () => {
     setLoginSubmitted(true)
