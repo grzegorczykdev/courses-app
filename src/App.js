@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { Routes, Route } from 'react-router-dom'
+
 import FullPageLayout from './components/FullPageLayout'
 import FullPageMessage from './components/FullPageMessage'
 import FullPageLoader from './components/FullPageLoader'
@@ -10,7 +12,6 @@ import PageLogin from './pages/PageLogin/PageLogin'
 import PageCreateAccount from './pages/PageCreateAccount/PageCreateAccount'
 import PageRecoverPassword from './pages/PageRecoverPassword/PageRecoverPassword'
 
-import { useRoute } from './contexts/RouterContext'
 import { useAuthUser } from './contexts/UserContext'
 
 import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
@@ -23,9 +24,6 @@ export const App = () => {
   const [errorMessage, setErrorMessage] = React.useState('')
   const [isInfoDisplayed, setIsInfoDisplayed] = React.useState(false)
   const [infoMessage, setInfoMessage] = React.useState('')
-
-  // router state
-  const notLoginUserRoute = useRoute()
 
   const [courses, setCourses] = React.useState(null)
 
@@ -126,26 +124,52 @@ export const App = () => {
       {
           isUserLoggedIn
             ?
-              <PageCoursesList
-                courses={courses}
-                onClickProfile={onClickProfile}
-                onClickLogOut={onClickLogOut}
-              />
-            :
-            notLoginUserRoute === 'LOGIN' ?
-              <PageLogin
-                onClickLogin={onClickLogin}
-              />
-              : notLoginUserRoute === 'CREATE-ACCOUNT' ?
-                <PageCreateAccount
-                  onClickCreateAccount={onClickCreateAccount}
+              <Routes>
+                <Route
+                  path={'*'}
+                  element={
+                    <PageCoursesList
+                      courses={courses}
+                      onClickProfile={onClickProfile}
+                      onClickLogOut={onClickLogOut}
+                    />}
                 />
-                : notLoginUserRoute === 'FORGOT-PASSWORD' ?
-                  <PageRecoverPassword
-                    onClickRecover={onClickRecover}
-                  />
-                  :
-                  null}
+              </Routes>
+            :
+            null
+            }
+      {
+              !isUserLoggedIn
+                ?
+                  <Routes>
+                    <Route
+                      path={'*'}
+                      element={
+                        <PageLogin
+                          onClickLogin={onClickLogin}
+                        />
+                  }
+                    />
+                    <Route
+                      path={'/create-account'}
+                      element={
+                        <PageCreateAccount
+                          onClickCreateAccount={onClickCreateAccount}
+                        />
+                    }
+                    />
+                    <Route
+                      path={'/recover-password'}
+                      element={
+                        <PageRecoverPassword
+                          onClickRecover={onClickRecover}
+                        />
+                    }
+                    />
+                  </Routes>
+                :
+                null
+            }
       {
           /*
           Dwa podejścia w wyświetlaniu komponentów

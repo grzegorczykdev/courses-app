@@ -1,13 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import { useNavigate } from 'react-router-dom'
+
 import classes from './styles.module.css'
 import FullPageLayout from '../../components/FullPageLayout'
 import CreateAccountForm from '../../components/CreateAccountForm'
 import { EMAIL_VALIDATION_ERROR, PASSWORD_VALIDATION_ERROR, REPEAT_PASSWORD_VALIDATION_ERROR } from '../../consts'
 
 import isEmail from 'validator/lib/isEmail'
-import { useRouteTo } from '../../contexts/RouterContext'
 
 export const PageCreateAccount = (props) => {
   const {
@@ -25,11 +26,11 @@ export const PageCreateAccount = (props) => {
   const [createAccountRepeatPasswordError, setCreateAccountRepeatPasswordError] = React.useState(REPEAT_PASSWORD_VALIDATION_ERROR)
   const [createAccountSubmitted, setCreateAccountSubmitted] = React.useState(false)
 
-  const routeTo = useRouteTo()
+  const navigate = useNavigate()
 
   const onClickBackToLogin = React.useCallback(() => {
-    routeTo(() => 'LOGIN')
-  }, [routeTo])
+    navigate('/')
+  }, [navigate])
 
   const onClickCreateAccount = React.useCallback(async () => {
     setCreateAccountSubmitted(true)
