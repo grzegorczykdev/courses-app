@@ -6,26 +6,42 @@ import Typography from '../Typography'
 import TextField from '../TextField'
 import Button from '../Button'
 
+import { useFormContext } from 'react-hook-form'
+
+import { EMAIL_VALIDATION_ERROR, PASSWORD_VALIDATION_ERROR } from '../../consts'
+
+import isEmail from 'validator/lib/isEmail'
+
 import classes from './styles.module.css'
 
 export const LoginForm = (props) => {
   const {
     className,
-    email,
-    emailError,
-    onChangeEmail,
-    onChangePassword,
     onClickCreateAccount,
     onClickForgotPassword,
-    onClickLogin,
-    password,
-    passwordError,
+    onSubmit,
     ...otherProps
   } = props
 
+  const methods = useFormContext()
+
+  const {register, formState: {errors}} = methods
+
+  const registeredEmailProps = register('email', {
+    validate:(email) => isEmail(email) || EMAIL_VALIDATION_ERROR
+  })
+
+  const registeredPasswordProps = register('password', {
+    minLength:{
+      value: 6,
+      message: PASSWORD_VALIDATION_ERROR
+    }
+  })
+
   return (
-    <div
+    <form
       className={`${classes.root}${className ? ` ${className}` : ''}`}
+      onSubmit={onSubmit}
       {...otherProps}
     >
       <Logo className={classes.logo}/>
@@ -36,21 +52,19 @@ export const LoginForm = (props) => {
       </Typography>
       <TextField
         className={classes.textField}
-        errorMessage={emailError}
-        onChange={onChangeEmail}
+        errorMessage={errors.email && errors.email.message}
         placeholder={'E-mail'}
-        value={email}
+        {...registeredEmailProps}
       />
       <TextField
         className={classes.textField}
-        errorMessage={passwordError}
-        onChange={onChangePassword}
+        errorMessage={errors.password && errors.password.message}
         placeholder={'Password'}
         type={'password'}
-        value={password}
+        {...registeredPasswordProps}
       />
       <Button
-        onClick={onClickLogin}
+        type={'submit'}
         className={classes.button}
         variant={'contained'}
         color={'primary'}
@@ -70,21 +84,15 @@ export const LoginForm = (props) => {
         color={'primary'}
       >FORGOT PASSWORD
       </Button>
-    </div>
+    </form>
   )
 }
 
 LoginForm.propTypes = {
   className: PropTypes.string,
-  email: PropTypes.string.isRequired,
-  emailError: PropTypes.string,
-  onChangeEmail: PropTypes.func.isRequired,
-  onChangePassword: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   onClickCreateAccount: PropTypes.func.isRequired,
-  onClickForgotPassword: PropTypes.func.isRequired,
-  onClickLogin: PropTypes.func.isRequired,
-  password: PropTypes.string.isRequired,
-  passwordError: PropTypes.string
+  onClickForgotPassword: PropTypes.func.isRequired
 }
 
 export default LoginForm

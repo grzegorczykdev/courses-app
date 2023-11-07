@@ -12,7 +12,6 @@ import RecoverPasswordForm from '../../components/RecoverPasswordForm'
 export const PageRecoverPassword = (props) => {
   const {
     className,
-    // onClickBackToLogin,
     onClickRecover,
     ...otherProps
   } = props
