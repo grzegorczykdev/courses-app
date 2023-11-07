@@ -6,28 +6,60 @@ import Typography from '../Typography'
 import TextField from '../TextField'
 import Button from '../Button'
 
+import { useFormContext } from 'react-hook-form'
+
+import { EMAIL_VALIDATION_ERROR, PASSWORD_VALIDATION_ERROR, REPEAT_PASSWORD_VALIDATION_ERROR } from '../../consts'
+
+import isEmail from 'validator/lib/isEmail'
+
 import classes from './styles.module.css'
 
 export const CreateAccountForm = (props) => {
   const {
     className,
-    createAccountEmailError,
-    createAccountPasswordError,
-    createAccountRepeatPasswordError,
-    onClickCreateAccount,
     onClickBackToLogin,
-    createAccountEmail,
-    createAccountPassword,
-    createAccountRepeatPassword,
-    onChangePassword,
-    onChangeEmail,
-    onChangeRepeatPassword,
+    onSubmit,
     ...otherProps
   } = props
 
+  const methods = useFormContext()
+
+  const { watch, register, formState: { errors } } = methods
+
+  const password = watch('password')
+
+  const registeredEmailProps = register('email', {
+    validate:(email) => isEmail(email) || EMAIL_VALIDATION_ERROR
+  })
+
+  const registeredPasswordProps = register('password', {
+    required: {
+      value: true,
+      message: PASSWORD_VALIDATION_ERROR
+    },
+    minLength: {
+      value: 6,
+      message: PASSWORD_VALIDATION_ERROR
+    }
+  })
+
+  const registeredRepeatPasswordProps = register('repeatPassword', {
+    required: {
+      value: true,
+      message: REPEAT_PASSWORD_VALIDATION_ERROR
+    },
+    minLength: {
+      value: 6,
+      message: REPEAT_PASSWORD_VALIDATION_ERROR
+    },
+    validate: (repeatPassword) => repeatPassword === password || REPEAT_PASSWORD_VALIDATION_ERROR
+  })
+
+
   return (
-    <div
+    <form
       className={`${classes.root}${className ? ` ${className}` : ''}`}
+      onSubmit={onSubmit}
       {...otherProps}
     >
       <Logo className={classes.logo}/>
@@ -37,30 +69,27 @@ export const CreateAccountForm = (props) => {
       >Create new account
       </Typography>
       <TextField
-        errorMessage={createAccountEmailError}
-        value={createAccountEmail}
-        onChange={onChangeEmail}
+        errorMessage={errors.email && errors.email.message}
         className={classes.textField}
         placeholder={'E-mail'}
+        {...registeredEmailProps}
       />
       <TextField
-        errorMessage={createAccountPasswordError}
+        errorMessage={errors.password && errors.password.message}
         type={'password'}
-        value={createAccountPassword}
-        onChange={onChangePassword}
         className={classes.textField}
         placeholder={'Password'}
+        {...registeredPasswordProps}
       />
       <TextField
-        errorMessage={createAccountRepeatPasswordError}
+        errorMessage={errors.repeatPassword && errors.repeatPassword.message}
         type={'password'}
-        value={createAccountRepeatPassword}
-        onChange={onChangeRepeatPassword}
         className={classes.textField}
         placeholder={'Repeat password'}
+        {...registeredRepeatPasswordProps}
       />
       <Button
-        onClick={onClickCreateAccount}
+        type={'submit'}
         className={classes.button}
         variant={'contained'}
         color={'primary'}
@@ -73,23 +102,14 @@ export const CreateAccountForm = (props) => {
         color={'primary'}
       >BACK TO LOGIN
       </Button>
-    </div>
+    </form>
   )
 }
 
 CreateAccountForm.propTypes = {
   className: PropTypes.string,
-  onClickCreateAccount: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   onClickBackToLogin: PropTypes.func.isRequired,
-  createAccountEmail: PropTypes.string.isRequired,
-  createAccountPassword: PropTypes.string.isRequired,
-  createAccountRepeatPassword: PropTypes.string.isRequired,
-  onChangeEmail: PropTypes.func.isRequired,
-  onChangePassword: PropTypes.func.isRequired,
-  onChangeRepeatPassword: PropTypes.func.isRequired,
-  createAccountEmailError: PropTypes.string,
-  createAccountPasswordError: PropTypes.string,
-  createAccountRepeatPasswordError: PropTypes.string
 }
 
 export default CreateAccountForm
