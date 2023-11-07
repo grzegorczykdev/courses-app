@@ -3,24 +3,22 @@ import PropTypes from 'prop-types'
 
 import { useNavigate } from 'react-router-dom'
 
+import { useForm, FormProvider } from 'react-hook-form'
+
 import classes from './styles.module.css'
-import { EMAIL_VALIDATION_ERROR } from '../../consts'
 import FullPageLayout from '../../components/FullPageLayout'
 import RecoverPasswordForm from '../../components/RecoverPasswordForm'
-
-import isEmail from 'validator/lib/isEmail'
 
 export const PageRecoverPassword = (props) => {
   const {
     className,
     // onClickBackToLogin,
-    onClickRecover: onClickRecoverFromProps,
+    onClickRecover,
     ...otherProps
   } = props
 
-  const [email, setEmail] = React.useState('')
-  const [emailError, setEmailError] = React.useState(EMAIL_VALIDATION_ERROR)
-  const [isSubmitted, setIsSubmitted] = React.useState(false)
+  const methods = useForm()
+  const {handleSubmit} = methods
 
   const navigate = useNavigate()
 
@@ -28,33 +26,18 @@ export const PageRecoverPassword = (props) => {
     navigate('/')
   }, [navigate])
 
-  const onClickRecover = React.useCallback(async () => {
-    setIsSubmitted(() => true)
-
-    if (emailError) return
-
-    onClickRecoverFromProps(email)
-  }, [email, emailError, onClickRecoverFromProps])
-
-  React.useEffect(() => {
-    setEmailError(() => isEmail(email) ? '' : EMAIL_VALIDATION_ERROR)
-  }, [email])
-
   return (
     <div
       className={`${classes.root}${className ? ` ${className}` : ''}`}
       {...otherProps}
     >
       <FullPageLayout>
-        <RecoverPasswordForm
-          email={email}
-          emailError={isSubmitted ? emailError : undefined}
-          onChangeEmail={(e) => {
-            setEmail(() => e.target.value)
-          }}
-          onClickBackToLogin={onClickBackToLogin}
-          onClickRecoverPassword={onClickRecover}
-        />
+        <FormProvider {...methods}>
+          <RecoverPasswordForm
+            onSubmit={handleSubmit((data)=>onClickRecover(data.email))}
+            onClickBackToLogin={onClickBackToLogin}
+          />
+        </FormProvider>
       </FullPageLayout>
     </div>
   )
