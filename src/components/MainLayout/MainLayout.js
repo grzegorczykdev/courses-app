@@ -9,7 +9,7 @@ export const MainLayout = (props) => {
   const {
     className,
     contentAppBar,
-    contentSearch = 'a',
+    contentSearch,
     contentMain,
     ...otherProps
   } = props

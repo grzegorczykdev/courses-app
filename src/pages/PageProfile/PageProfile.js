@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 
 import { useNavigate } from 'react-router-dom'
 
+import { useForm, FormProvider } from 'react-hook-form'
+
 import Logo from '../../components/Logo'
 
 import MainLayout from '../../components/MainLayout/MainLayout'
@@ -11,6 +13,8 @@ import MainLayout from '../../components/MainLayout/MainLayout'
 
 import classes from './styles.module.css'
 import Button from '../../components/Button'
+import ProfileForm from '../../components/ProfileForm/ProfileForm'
+import { useAuthUser } from '../../contexts/UserContext'
 
 export const PageProfile = (props) => {
   const {
@@ -18,13 +22,22 @@ export const PageProfile = (props) => {
     ...otherProps
   } = props
 
-  const navigate = useNavigate()
+  const {
+    userDisplayName,
+    userEmail,
+    userAvatar
+  } = useAuthUser()
 
-  // const {
-  //   userDisplayName,
-  //   userEmail,
-  //   userAvatar
-  // } = useAuthUser()
+  const methods = useForm({
+    defaultValues: {
+      email: userEmail,
+      displayName: userDisplayName,
+      avatar: userAvatar
+    }
+  })
+  const { handleSubmit } = methods
+
+  const navigate = useNavigate()
 
   const onClickGoBack = React.useCallback(() => {
     navigate('/')
@@ -43,13 +56,19 @@ export const PageProfile = (props) => {
               onClick={onClickGoBack}
               variant={'contained'}
               color={'primary'}
-            >Go back
+            >GO BACK
             </Button>
           </>
         }
 
         contentMain={
-          'ProfilePage'
+          <FormProvider {...methods}>
+            <ProfileForm
+              onSubmit={handleSubmit((data) => {
+                console.log(data)
+              })}
+            />
+          </FormProvider>
         }
       />
     </div>
