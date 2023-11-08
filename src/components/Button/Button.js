@@ -24,11 +24,11 @@ export const Button = (props) => {
     <button
       className={`${classes.root}${className ? ` ${className}` : ''}${variantClass ? ` ${variantClass}` : ''}${colorClass ? ` ${colorClass}` : ''}${disabled ? ` ${classes.disabled}` : ''}`}
       {...otherProps}
-    >{icon ? 
+    >{icon ?
       <span className={classes.iconWrapper}>
         {icon === 'eye' ? <EyeIcon/> : null}
       </span>
-     : null}
+      : null}
       <Typography variant={'button'}>
         {children}
       </Typography>

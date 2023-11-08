@@ -1,100 +1,52 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import { useNavigate } from 'react-router-dom'
+
+import { useForm, FormProvider } from 'react-hook-form'
+
 import classes from './styles.module.css'
 import FullPageLayout from '../../components/FullPageLayout'
 import CreateAccountForm from '../../components/CreateAccountForm'
-import { EMAIL_VALIDATION_ERROR, PASSWORD_VALIDATION_ERROR, REPEAT_PASSWORD_VALIDATION_ERROR } from '../../consts'
 
-import isEmail from 'validator/lib/isEmail'
+export const PageCreateAccount = (props) => {
+  const {
+    className,
+    onClickCreateAccount,
+    ...otherProps
+  } = props
 
-export class PageCreateAccount extends React.Component {
-  state = {
-    createAccountEmail: '',
-    createAccountEmailError: EMAIL_VALIDATION_ERROR,
-    createAccountPassword: '',
-    createAccountPasswordError: PASSWORD_VALIDATION_ERROR,
-    createAccountRepeatPassword: '',
-    createAccountRepeatPasswordError: REPEAT_PASSWORD_VALIDATION_ERROR,
-    createAccountSubmitted: false
-  }
+  const methods = useForm()
+  const { handleSubmit } = methods
 
-  onChangeCAEmailHandler = (e) => this.setState(() => ({
-    createAccountEmail: e.target.value,
-    createAccountEmailError: isEmail(e.target.value) ? '' : EMAIL_VALIDATION_ERROR
-  }))
+  const navigate = useNavigate()
 
-  onChangeCACreateAccountPasswordHandler = (e) => this.setState(() => ({
-    createAccountPassword: e.target.value,
-    createAccountPasswordError: e.target.value.length >= 6 ? '' : PASSWORD_VALIDATION_ERROR
-  }))
+  const onClickBackToLogin = React.useCallback(() => {
+    navigate('/')
+  }, [navigate])
 
-  onChangeCARepeatPasswordHandler = (e) => {
-    this.setState(() => ({
-      createAccountRepeatPassword: e.target.value,
-      createAccountRepeatPasswordError: e.target.value === this.state.createAccountPassword ? '' : REPEAT_PASSWORD_VALIDATION_ERROR
-    }))
-  }
-
-  onClickCACreateAccountHandler = async () => {
-    this.setState(() => ({ createAccountSubmitted: true }))
-
-    if (this.state.createAccountEmailError) return
-    if (this.state.createAccountPasswordError) return
-    if (this.state.createAccountRepeatPasswordError) return
-
-    this.props.onClickCACreateAccountHandler(
-      this.state.createAccountEmail,
-      this.state.createAccountPassword)
-  }
-
-  render () {
-    const {
-      className,
-      onClickCACreateAccountHandler,
-      onClickCABackToLoginHandler,
-      ...otherProps
-    } = this.props
-
-    const {
-      createAccountEmail,
-      createAccountEmailError,
-      createAccountPassword,
-      createAccountPasswordError,
-      createAccountRepeatPassword,
-      createAccountRepeatPasswordError,
-      createAccountSubmitted
-    } = this.state
-
-    return (
-      <div
-        className={`${classes.root}${className ? ` ${className}` : ''}`}
-        {...otherProps}
-      >
-        <FullPageLayout>
+  return (
+    <div
+      className={`${classes.root}${className ? ` ${className}` : ''}`}
+      {...otherProps}
+    >
+      <FullPageLayout>
+        <FormProvider {...methods}>
           <CreateAccountForm
-            createAccountEmail={createAccountEmail}
-            createAccountEmailError={createAccountSubmitted ? createAccountEmailError : undefined}
-            createAccountPassword={createAccountPassword}
-            createAccountPasswordError={createAccountSubmitted ? createAccountPasswordError : undefined}
-            createAccountRepeatPassword={createAccountRepeatPassword}
-            createAccountRepeatPasswordError={createAccountSubmitted ? createAccountRepeatPasswordError : undefined}
-            onChangeEmail={this.onChangeCAEmailHandler}
-            onChangePassword={this.onChangeCACreateAccountPasswordHandler}
-            onChangeRepeatPassword={this.onChangeCARepeatPasswordHandler}
-            onClickCreateAccount={this.onClickCACreateAccountHandler}
-            onClickBackToLogin={onClickCABackToLoginHandler}
+            onSubmit={handleSubmit(
+            (data)=>onClickCreateAccount(data.email,data.password))
+          }
+            onClickBackToLogin={onClickBackToLogin}
           />
-        </FullPageLayout>
-      </div>
-    )
-  }
+        </FormProvider>
+      </FullPageLayout>
+    </div>
+  )
 }
 
 PageCreateAccount.propTypes = {
   className: PropTypes.string,
-  onClickCACreateAccountHandler: PropTypes.func,
-  onClickCABackToLoginHandler: PropTypes.func
+  onClickCreateAccount: PropTypes.func
 }
 
 export default PageCreateAccount

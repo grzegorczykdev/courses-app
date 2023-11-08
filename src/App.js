@@ -1,220 +1,189 @@
 import React from 'react'
 
-import FullPageLoader from './components/FullPageLoader'
-import FullPageMessage from './components/FullPageMessage'
+import { Routes, Route } from 'react-router-dom'
 
 import FullPageLayout from './components/FullPageLayout'
+import FullPageMessage from './components/FullPageMessage'
+import FullPageLoader from './components/FullPageLoader'
 import Message from './components/Message'
 
-import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
-import { getAll as getAllCourses } from './api/courses'
 import PageCoursesList from './pages/PageCoursesList/PageCoursesList'
 import PageLogin from './pages/PageLogin/PageLogin'
 import PageCreateAccount from './pages/PageCreateAccount/PageCreateAccount'
 import PageRecoverPassword from './pages/PageRecoverPassword/PageRecoverPassword'
 
-export class App extends React.Component {
-  state = {
-    // global state
-    isLoading: false,
-    hasError: false,
-    errorMessage: '',
-    isInfoDisplayed: false,
-    infoMessage: '',
+import { useAuthUser } from './contexts/UserContext'
 
-    // user state
-    isUserLoggedIn: false,
-    userDisplayName: '',
-    userEmail: '',
-    userAvatar: '',
+import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
 
-    // router state
-    notLoginUserRoute: 'LOGIN', // 'LOGIN, 'CREATE-ACCOUNT', 'FORGOT-PASSWORD'
+import { getAll as getAllCourses } from './api/courses'
 
-    // courses
-    courses: null
-  }
+export const App = () => {
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [hasError, setHasError] = React.useState(false)
+  const [errorMessage, setErrorMessage] = React.useState('')
+  const [isInfoDisplayed, setIsInfoDisplayed] = React.useState(false)
+  const [infoMessage, setInfoMessage] = React.useState('')
 
-  onClickLoginCreateAccountHandler = () => {
-    this.setState(() => ({ notLoginUserRoute: 'CREATE-ACCOUNT' }))
-  }
+  const [courses, setCourses] = React.useState(null)
 
-  onClickLoginForgotPasswordHandler = () => {
-    this.setState(() => ({ notLoginUserRoute: 'FORGOT-PASSWORD' }))
-  }
+  const {
+    isUserLoggedIn,
+    clearUser,
+    setUser
+  } = useAuthUser()
 
-  onClickBackToLoginHandler = () => {
-    this.setState(() => ({ notLoginUserRoute: 'LOGIN' }))
-  }
-
-  async componentDidMount () {
-    this.setState(() => ({ isLoading: true }))
-    const userIsLoggedIn = await checkIfUserIsLoggedIn()
-    if (userIsLoggedIn) this.onUserLogged()
-    this.setState(() => ({ isLoading: false }))
-  }
-
-  handleAsyncAction = async (asyncAction) => {
-    this.setState(() => ({ isLoading: true }))
+  const handleAsyncAction = React.useCallback(async (asyncAction) => {
+    setIsLoading(() => true)
     try {
       await asyncAction()
     } catch (error) {
-      this.setState(() => ({
-        hasError: true,
-        errorMessage: error.data.error.message
-      }))
+      setHasError(() => true)
+      setErrorMessage(() => error.data.error.message)
     } finally {
-      this.setState(() => ({ isLoading: false }))
+      setIsLoading(() => false)
     }
-  }
+  }, [])
 
-  onClickCACreateAccountHandler = async (email, password) => {
-    this.handleAsyncAction(async () => {
-      await signUp(email, password)
-      this.setState(() => ({
-        isInfoDisplayed: true,
-        infoMessage: 'User account created. User is logged in!'
-      }))
-      this.onUserLogged()
-    })
-  }
-
-  onClickResetRecoverPasswordHandler = async (email) => {
-    this.handleAsyncAction(async () => {
-      await sendPasswordResetEmail(email)
-      this.setState(() => ({
-        isInfoDisplayed: true,
-        infoMessage: 'Check your inbox'
-      }))
-    })
-  }
-
-  onUserDropdownProfileClick = () => {
-    console.log('2')
-  }
-
-  onUserDropdownLogOutClick = async () => {
-    this.handleAsyncAction(async () => {
-      await logOut()
-      this.setState(() => ({
-        isUserLoggedIn: false,
-        isUserDropdownOpen: false,
-        userDisplayName: '',
-        userEmail: '',
-        userAvatar: ''
-      }))
-    })
-  }
-
-  fetchCourses = async () => {
-    this.handleAsyncAction(async () => {
+  const fetchCourses = React.useCallback(async () => {
+    handleAsyncAction(async () => {
       const courses = await getAllCourses()
-      this.setState(() => ({
-        courses,
-        allCourses: courses
-      }))
+      setCourses(() => courses)
     })
-  }
+  }, [handleAsyncAction])
 
-  onUserLogged = () => {
+  const onUserLogged = React.useCallback(() => {
     const token = getIdToken()
     if (!token) return
     const user = decodeToken(token)
     // @TODO replace this token decoding with request for user data
-    this.setState(() => ({
-      isUserLoggedIn: true,
+    setUser({
       userDisplayName: '',
       userEmail: user.email,
-      userAvatar: '',
-      loginEmail: '',
-      loginPassword: ''
-    }))
-
-    this.fetchCourses()
-  }
-
-  onClickLogin = async (email, password) => {
-    this.handleAsyncAction(async () => {
-      await signIn(email, password)
-      this.onUserLogged()
+      userAvatar: ''
     })
+    fetchCourses()
+  }, [fetchCourses, setUser])
+
+  const onClickLogin = React.useCallback(async (email, password) => {
+    handleAsyncAction(async () => {
+      await signIn(email, password)
+      onUserLogged()
+    })
+  }, [handleAsyncAction, onUserLogged])
+
+  const onClickCreateAccount = React.useCallback(async (email, password) => {
+    handleAsyncAction(async () => {
+      await signUp(email, password)
+      setIsInfoDisplayed(() => true)
+      setInfoMessage(() => 'User account created. User is logged in!')
+      onUserLogged()
+    })
+  }, [handleAsyncAction, onUserLogged])
+
+  const onClickRecover = React.useCallback(async (email) => {
+    handleAsyncAction(async () => {
+      await sendPasswordResetEmail(email)
+      setIsInfoDisplayed(() => true)
+      setInfoMessage(() => 'Check your inbox!')
+      onUserLogged()
+    })
+  }, [handleAsyncAction, onUserLogged])
+
+  const onClickProfile = () => {
+    console.log('2')
   }
 
-  dismissError = () => {
-    this.setState(() => ({
-      hasError: false,
-      errorMessage: ''
-    }))
-  }
+  const onClickLogOut = React.useCallback(async () => {
+    await logOut()
+    clearUser()
+  }, [clearUser])
 
-  dismissInfo = () => {
-    this.setState(() => ({
-      isInfoDisplayed: false,
-      infoMessage: ''
-    }))
-  }
+  const dismissError = React.useCallback(() => {
+    setHasError(() => false)
+    setErrorMessage(() => '')
+  }, [])
 
-  render () {
-    const {
-      courses,
-      errorMessage,
-      hasError,
-      infoMessage,
-      isInfoDisplayed,
-      isLoading,
-      isUserLoggedIn,
-      notLoginUserRoute,
-      userDisplayName,
-      userEmail,
-      userAvatar
-    } = this.state
+  const dismissInfo = React.useCallback(() => {
+    setIsInfoDisplayed(() => false)
+    setInfoMessage(() => '')
+  }, [])
 
-    return (
-      <div>
-        {
+  React.useEffect(() => {
+    (async () => {
+      setIsLoading(() => true)
+      const userIsLoggedIn = await checkIfUserIsLoggedIn()
+      if (userIsLoggedIn) onUserLogged()
+      setIsLoading(() => false)
+    })()
+    // mount only
+  }, [onUserLogged])
+
+  return (
+    <div>
+      {
           isUserLoggedIn
             ?
-              <PageCoursesList
-                courses={courses}
-                userDisplayName={userDisplayName}
-                userEmail={userEmail}
-                userAvatar={userAvatar}
-                onUserDropdownProfileClick={this.onUserDropdownProfileClick}
-                onUserDropdownLogOutClick={this.onUserDropdownLogOutClick}
-              />
-            :
-            notLoginUserRoute === 'LOGIN' ?
-              <PageLogin
-                onClickLogin={this.onClickLogin}
-                onClickLoginCreateAccountHandler={this.onClickLoginCreateAccountHandler}
-                onClickLoginForgotPasswordHandler={this.onClickLoginForgotPasswordHandler}
-              />
-              : notLoginUserRoute === 'CREATE-ACCOUNT' ?
-                <PageCreateAccount
-                  onClickCACreateAccountHandler={this.onClickCACreateAccountHandler}
-                  onClickCABackToLoginHandler={this.onClickBackToLoginHandler}
+              <Routes>
+                <Route
+                  path={'*'}
+                  element={
+                    <PageCoursesList
+                      courses={courses}
+                      onClickProfile={onClickProfile}
+                      onClickLogOut={onClickLogOut}
+                    />}
                 />
-                : notLoginUserRoute === 'FORGOT-PASSWORD' ?
-                  <PageRecoverPassword
-                    onClickResetRecoverPasswordHandler={this.onClickResetRecoverPasswordHandler}
-                    onClickResetBackToLoginHandler={this.onClickBackToLoginHandler}
-                  />
-                  :
-                  null}
-        {
+              </Routes>
+            :
+            null
+            }
+      {
+              !isUserLoggedIn
+                ?
+                  <Routes>
+                    <Route
+                      path={'*'}
+                      element={
+                        <PageLogin
+                          onClickLogin={onClickLogin}
+                        />
+                  }
+                    />
+                    <Route
+                      path={'/create-account'}
+                      element={
+                        <PageCreateAccount
+                          onClickCreateAccount={onClickCreateAccount}
+                        />
+                    }
+                    />
+                    <Route
+                      path={'/recover-password'}
+                      element={
+                        <PageRecoverPassword
+                          onClickRecover={onClickRecover}
+                        />
+                    }
+                    />
+                  </Routes>
+                :
+                null
+            }
+      {
           /*
           Dwa podejścia w wyświetlaniu komponentów
           Error - Komponent spomponowany w FullPageMessage - koniecznosć tworzenia nowego obiektu z propsami dla wrappera
           Info - Komponent tworzony w tym miejscu - przekazywane osobne propsy
           */
         }
-        {
+      {
           hasError
             ? <FullPageMessage
                 buttonLabel={'OK'}
                 iconVariant={'error'}
                 message={errorMessage}
-                onButtonClick={this.dismissError}
+                onButtonClick={dismissError}
                 wrapperProps={{
                   className: 'wrapper-class'
                 }}
@@ -229,16 +198,15 @@ export class App extends React.Component {
                     buttonLabel={'OK'}
                     iconVariant={'info'}
                     message={infoMessage}
-                    onButtonClick={this.dismissInfo}
+                    onButtonClick={dismissInfo}
                   />
                 </FullPageLayout> :
               isLoading ?
                 <FullPageLoader/>
                 : null
         }
-      </div>
-    )
-  }
+    </div>
+  )
 }
 
 export default App

@@ -30,8 +30,9 @@ export const CourseCard = (props) => {
         <div
           className={classes.image}
           style={{
-        backgroundImage: `url(${image})`
-      }}>
+            backgroundImage: `url(${image})`
+          }}
+        >
         </div>
       </div>
       <div className={classes.textWrapper}>
@@ -73,11 +74,11 @@ export const CourseCard = (props) => {
 }
 
 export const CoursePropType = PropTypes.shape({
-    category: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired
-  }).isRequired
+  category: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired
+}).isRequired
 
 CourseCard.propTypes = {
   className: PropTypes.string,
