@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import { useNavigate } from 'react-router-dom'
+
 import Logo from '../../components/Logo'
 import UserDropdown from '../../components/UserDropdown'
 import ListItem from '../../components/ListItem'
@@ -19,10 +21,15 @@ export const PageCoursesList = (props) => {
   const {
     className,
     courses,
-    onClickProfile,
     onClickLogOut,
     ...otherProps
   } = props
+
+  const navigate = useNavigate()
+
+  const onClickProfile = React.useCallback(() => {
+    navigate('/profile')
+  }, [navigate])
 
   const [searchPhrase, setSearchPhrase] = React.useState('')
   const [isUserDropdownOpen, setIsUserDropdownOpen] = React.useState('')
@@ -60,7 +67,6 @@ export const PageCoursesList = (props) => {
                   <ListItem
                     icon={'profile'}
                     text={'Profile'}
-                    disabled={true}
                     onClick={onClickProfile}
                   />
                   <ListItem
@@ -102,7 +108,6 @@ export const PageCoursesList = (props) => {
 PageCoursesList.propTypes = {
   className: PropTypes.string,
   courses: PropTypes.arrayOf(CoursePropType),
-  onClickProfile: PropTypes.func,
   onClickLogOut: PropTypes.func
 }
 

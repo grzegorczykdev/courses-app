@@ -11,6 +11,7 @@ import PageCoursesList from './pages/PageCoursesList/PageCoursesList'
 import PageLogin from './pages/PageLogin/PageLogin'
 import PageCreateAccount from './pages/PageCreateAccount/PageCreateAccount'
 import PageRecoverPassword from './pages/PageRecoverPassword/PageRecoverPassword'
+import PageProfile from './pages/PageProfile/PageProfile'
 
 import { useAuthUser } from './contexts/UserContext'
 
@@ -90,10 +91,6 @@ export const App = () => {
     })
   }, [handleAsyncAction, onUserLogged])
 
-  const onClickProfile = () => {
-    console.log('2')
-  }
-
   const onClickLogOut = React.useCallback(async () => {
     await logOut()
     clearUser()
@@ -126,11 +123,15 @@ export const App = () => {
             ?
               <Routes>
                 <Route
+                  path={'/profile'}
+                  element={
+                    <PageProfile />}
+                />
+                <Route
                   path={'*'}
                   element={
                     <PageCoursesList
                       courses={courses}
-                      onClickProfile={onClickProfile}
                       onClickLogOut={onClickLogOut}
                     />}
                 />

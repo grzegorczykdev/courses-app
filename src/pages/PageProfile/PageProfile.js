@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import { useNavigate } from 'react-router-dom'
+
 import Logo from '../../components/Logo'
 
 import MainLayout from '../../components/MainLayout/MainLayout'
@@ -8,6 +10,7 @@ import MainLayout from '../../components/MainLayout/MainLayout'
 // import { useAuthUser } from '../../contexts/UserContext'
 
 import classes from './styles.module.css'
+import Button from '../../components/Button'
 
 export const PageProfile = (props) => {
   const {
@@ -15,11 +18,17 @@ export const PageProfile = (props) => {
     ...otherProps
   } = props
 
+  const navigate = useNavigate()
+
   // const {
   //   userDisplayName,
   //   userEmail,
   //   userAvatar
   // } = useAuthUser()
+
+  const onClickGoBack = React.useCallback(() => {
+    navigate('/')
+  }, [navigate])
 
   return (
     <div
@@ -30,12 +39,18 @@ export const PageProfile = (props) => {
         contentAppBar={
           <>
             <Logo className={classes.logo}/>
+            <Button
+              onClick={onClickGoBack}
+              variant={'contained'}
+              color={'primary'}
+            >Go back
+            </Button>
           </>
-                  }
+        }
 
         contentMain={
           'ProfilePage'
-                  }
+        }
       />
     </div>
   )
