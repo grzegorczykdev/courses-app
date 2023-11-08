@@ -15,7 +15,7 @@ import PageProfile from './pages/PageProfile/PageProfile'
 
 import { useAuthUser } from './contexts/UserContext'
 
-import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
+import { signIn, signUp, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut, updateUser, getUserData as getUserDataAPICall } from './auth'
 
 import { getAll as getAllCourses } from './api/courses'
 
@@ -53,48 +53,60 @@ export const App = () => {
     })
   }, [handleAsyncAction])
 
-  const onUserLogged = React.useCallback(() => {
-    const token = getIdToken()
-    if (!token) return
-    const user = decodeToken(token)
-    // @TODO replace this token decoding with request for user data
+  const getUserData = React.useCallback(async () => {
+    const data = await getUserDataAPICall()
     setUser({
-      userDisplayName: '',
-      userEmail: user.email,
-      userAvatar: ''
+      userDisplayName: data.displayName,
+      userEmail: data.email,
+      userAvatar: data.avatar
     })
-    fetchCourses()
-  }, [fetchCourses, setUser])
+  }, [setUser])
 
   const onClickLogin = React.useCallback(async (email, password) => {
     handleAsyncAction(async () => {
       await signIn(email, password)
-      onUserLogged()
+      await Promise.all([
+        getUserData(),
+        fetchCourses()
+      ])
     })
-  }, [handleAsyncAction, onUserLogged])
+  }, [fetchCourses, getUserData, handleAsyncAction])
 
   const onClickCreateAccount = React.useCallback(async (email, password) => {
     handleAsyncAction(async () => {
       await signUp(email, password)
       setIsInfoDisplayed(() => true)
       setInfoMessage(() => 'User account created. User is logged in!')
-      onUserLogged()
+      await Promise.all([
+        getUserData(),
+        fetchCourses()
+      ])
     })
-  }, [handleAsyncAction, onUserLogged])
+  }, [fetchCourses, getUserData, handleAsyncAction])
 
   const onClickRecover = React.useCallback(async (email) => {
     handleAsyncAction(async () => {
       await sendPasswordResetEmail(email)
       setIsInfoDisplayed(() => true)
       setInfoMessage(() => 'Go to your mailbox to change the password!')
-      onUserLogged()
+      await Promise.all([
+        getUserData(),
+        fetchCourses()
+      ])
     })
-  }, [handleAsyncAction, onUserLogged])
+  }, [fetchCourses, getUserData, handleAsyncAction])
 
   const onClickLogOut = React.useCallback(async () => {
     await logOut()
     clearUser()
   }, [clearUser])
+
+  const onClickSaveChangesProfile = React.useCallback(async (displayName, photoUrl) => {
+    handleAsyncAction(async () => {
+      await updateUser(displayName, photoUrl)
+      await getUserData()
+    })
+  }, [getUserData, handleAsyncAction])
 
   const dismissError = React.useCallback(() => {
     setHasError(() => false)
@@ -110,11 +122,16 @@ export const App = () => {
     (async () => {
       setIsLoading(() => true)
       const userIsLoggedIn = await checkIfUserIsLoggedIn()
-      if (userIsLoggedIn) onUserLogged()
+      if (userIsLoggedIn) {
+        await Promise.all([
+          getUserData(),
+          fetchCourses()
+        ])
+      }
       setIsLoading(() => false)
     })()
     // mount only
-  }, [onUserLogged])
+  }, [fetchCourses, getUserData])
 
   return (
     <div>
@@ -125,7 +142,9 @@ export const App = () => {
                 <Route
                   path={'/profile'}
                   element={
-                    <PageProfile />}
+                    <PageProfile
+                      onSaveChanges={onClickSaveChangesProfile}
+                    />}
                 />
                 <Route
                   path={'*'}

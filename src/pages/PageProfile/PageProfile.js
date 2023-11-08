@@ -9,16 +9,15 @@ import Logo from '../../components/Logo'
 
 import MainLayout from '../../components/MainLayout/MainLayout'
 
-// import { useAuthUser } from '../../contexts/UserContext'
-
-import classes from './styles.module.css'
 import Button from '../../components/Button'
 import ProfileForm from '../../components/ProfileForm/ProfileForm'
 import { useAuthUser } from '../../contexts/UserContext'
+import classes from './styles.module.css'
 
 export const PageProfile = (props) => {
   const {
     className,
+    onSaveChanges,
     ...otherProps
   } = props
 
@@ -35,7 +34,16 @@ export const PageProfile = (props) => {
       avatar: userAvatar
     }
   })
-  const { handleSubmit } = methods
+
+  const { reset, handleSubmit } = methods
+
+  React.useEffect(() => {
+    reset({
+      email: userEmail,
+      displayName: userDisplayName,
+      avatar: userAvatar
+    })
+  }, [reset, userAvatar, userDisplayName, userEmail])
 
   const navigate = useNavigate()
 
@@ -64,8 +72,9 @@ export const PageProfile = (props) => {
         contentMain={
           <FormProvider {...methods}>
             <ProfileForm
-              onSubmit={handleSubmit((data) => {
-                console.log(data)
+              onSubmit={handleSubmit(async (data) => {
+                await onSaveChanges(data.displayName)
+                onClickGoBack()
               })}
             />
           </FormProvider>
@@ -76,7 +85,8 @@ export const PageProfile = (props) => {
 }
 
 PageProfile.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  onSaveChanges: PropTypes.func.isRequired
 }
 
 export default PageProfile
