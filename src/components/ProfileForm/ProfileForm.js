@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useFormContext } from 'react-hook-form'
 
+import { FIELD_IS_REQUIRED_VALIDATION_ERROR } from '../../consts'
 import TextField from '../TextField'
 import Button from '../Button'
 import Typography from '../Typography'
@@ -24,11 +25,7 @@ export const ProfileForm = (props) => {
   const registeredDisplayNameProps = register('displayName', {
     required: {
       value: true,
-      message: 'Required'
-    },
-    minLength: {
-      value: 2,
-      message: 'Min length 2'
+      message: FIELD_IS_REQUIRED_VALIDATION_ERROR
     }
   })
 
