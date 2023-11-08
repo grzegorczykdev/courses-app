@@ -85,7 +85,7 @@ export const App = () => {
     handleAsyncAction(async () => {
       await sendPasswordResetEmail(email)
       setIsInfoDisplayed(() => true)
-      setInfoMessage(() => 'Check your inbox!')
+      setInfoMessage(() => 'Go to your mailbox to change the password!')
       onUserLogged()
     })
   }, [handleAsyncAction, onUserLogged])
