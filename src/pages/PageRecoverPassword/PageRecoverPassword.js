@@ -17,7 +17,7 @@ export const PageRecoverPassword = (props) => {
   } = props
 
   const methods = useForm()
-  const {handleSubmit} = methods
+  const { handleSubmit } = methods
 
   const navigate = useNavigate()
 
@@ -33,7 +33,7 @@ export const PageRecoverPassword = (props) => {
       <FullPageLayout>
         <FormProvider {...methods}>
           <RecoverPasswordForm
-            onSubmit={handleSubmit((data)=>onClickRecover(data.email))}
+            onSubmit={handleSubmit((data) => onClickRecover(data.email))}
             onClickBackToLogin={onClickBackToLogin}
           />
         </FormProvider>

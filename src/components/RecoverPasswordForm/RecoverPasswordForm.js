@@ -23,10 +23,10 @@ export const RecoverPasswordForm = (props) => {
 
   const methods = useFormContext()
 
-  const {register, formState: {errors}} = methods
+  const { register, formState: { errors } } = methods
 
   const registeredEmailProps = register('email', {
-    validate:(email) => isEmail(email) || EMAIL_VALIDATION_ERROR
+    validate: (email) => isEmail(email) || EMAIL_VALIDATION_ERROR
   })
 
   return (

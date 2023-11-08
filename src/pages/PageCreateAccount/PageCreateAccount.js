@@ -34,7 +34,7 @@ export const PageCreateAccount = (props) => {
         <FormProvider {...methods}>
           <CreateAccountForm
             onSubmit={handleSubmit(
-            (data)=>onClickCreateAccount(data.email,data.password))
+              (data) => onClickCreateAccount(data.email, data.password))
           }
             onClickBackToLogin={onClickBackToLogin}
           />

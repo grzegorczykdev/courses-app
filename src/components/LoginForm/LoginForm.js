@@ -25,14 +25,14 @@ export const LoginForm = (props) => {
 
   const methods = useFormContext()
 
-  const {register, formState: {errors}} = methods
+  const { register, formState: { errors } } = methods
 
   const registeredEmailProps = register('email', {
-    validate:(email) => isEmail(email) || EMAIL_VALIDATION_ERROR
+    validate: (email) => isEmail(email) || EMAIL_VALIDATION_ERROR
   })
 
   const registeredPasswordProps = register('password', {
-    minLength:{
+    minLength: {
       value: 6,
       message: PASSWORD_VALIDATION_ERROR
     }

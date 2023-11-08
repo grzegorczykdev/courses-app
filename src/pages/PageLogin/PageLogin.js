@@ -17,7 +17,7 @@ export const PageLogin = (props) => {
   } = props
 
   const methods = useForm()
-  const {handleSubmit} = methods
+  const { handleSubmit } = methods
 
   const navigate = useNavigate()
 
@@ -37,9 +37,9 @@ export const PageLogin = (props) => {
       <FullPageLayout>
         <FormProvider {...methods}>
           <LoginForm
-            onSubmit={handleSubmit((data)=>{
-            onClickLogin(data.email, data.password)
-          })}
+            onSubmit={handleSubmit((data) => {
+              onClickLogin(data.email, data.password)
+            })}
             onClickCreateAccount={onClickCreateAccount}
             onClickForgotPassword={onClickForgotPassword}
           />

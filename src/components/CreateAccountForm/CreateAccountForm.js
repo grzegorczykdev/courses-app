@@ -29,7 +29,7 @@ export const CreateAccountForm = (props) => {
   const password = watch('password')
 
   const registeredEmailProps = register('email', {
-    validate:(email) => isEmail(email) || EMAIL_VALIDATION_ERROR
+    validate: (email) => isEmail(email) || EMAIL_VALIDATION_ERROR
   })
 
   const registeredPasswordProps = register('password', {
@@ -54,7 +54,6 @@ export const CreateAccountForm = (props) => {
     },
     validate: (repeatPassword) => repeatPassword === password || REPEAT_PASSWORD_VALIDATION_ERROR
   })
-
 
   return (
     <form
@@ -109,7 +108,7 @@ export const CreateAccountForm = (props) => {
 CreateAccountForm.propTypes = {
   className: PropTypes.string,
   onSubmit: PropTypes.func.isRequired,
-  onClickBackToLogin: PropTypes.func.isRequired,
+  onClickBackToLogin: PropTypes.func.isRequired
 }
 
 export default CreateAccountForm
