@@ -7,6 +7,7 @@ const errorProviderNotFount = () => {
 
 const initialContextState = {
   isUserLoggedIn: false,
+  userId: '',
   userDisplayName: '',
   userEmail: '',
   userAvatar: '',
@@ -33,12 +34,14 @@ export const UserContextProvider = (props) => {
   const [userDisplayName, setUserDisplayName] = React.useState(initialContextState.userDisplayName)
   const [userEmail, setUserEmail] = React.useState(initialContextState.userEmail)
   const [userAvatar, setUserAvatar] = React.useState(initialContextState.userAvatar)
+  const [userId, setUserId] = React.useState(initialContextState.userId)
 
   const clearUser = React.useCallback(() => {
     setIsUserLoggedIn(() => false)
     setUserDisplayName(() => '')
     setUserEmail(() => '')
     setUserAvatar(() => '')
+    setUserId(() => '')
   }, [])
 
   const setUser = React.useCallback((user) => {
@@ -46,6 +49,7 @@ export const UserContextProvider = (props) => {
     user.userDisplayName && setUserDisplayName(() => user.userDisplayName)
     user.userEmail && setUserEmail(() => user.userEmail)
     user.userAvatar && setUserAvatar(() => user.userAvatar)
+    user.userId && setUserId(()=>user.userId)
   }, [])
 
   return (
@@ -55,6 +59,7 @@ export const UserContextProvider = (props) => {
         userDisplayName,
         userEmail,
         userAvatar,
+        userId,
         clearUser,
         setUser
       }}

@@ -22,6 +22,7 @@ export const PageProfile = (props) => {
   const {
     className,
     onSaveChanges,
+    onAvatarChange,
     ...otherProps
   } = props
 
@@ -55,10 +56,6 @@ export const PageProfile = (props) => {
     navigate('/')
   }, [navigate])
 
-  const onAvatarChange = React.useCallback((file)=>{
-    console.log(file)
-  },[])
-
   return (
     <div
       className={`${classes.root}${className ? ` ${className}` : ''}`}
@@ -90,7 +87,9 @@ export const PageProfile = (props) => {
             >
             </Avatar>
             <FileInput
-              onChange={(e)=>onAvatarChange(e.target.files[0])}
+              onChange={(e)=>{
+                onAvatarChange(e.target.files[0])
+              }}
               className={classes.fileInput}
             >Change avatar
             </FileInput>
@@ -111,7 +110,8 @@ export const PageProfile = (props) => {
 
 PageProfile.propTypes = {
   className: PropTypes.string,
-  onSaveChanges: PropTypes.func.isRequired
+  onSaveChanges: PropTypes.func.isRequired,
+  onAvatarChange: PropTypes.func.isRequired
 }
 
 export default PageProfile

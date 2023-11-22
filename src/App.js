@@ -16,8 +16,10 @@ import PageProfile from './pages/PageProfile/PageProfile'
 import { useAuthUser } from './contexts/UserContext'
 
 import { signIn, signUp, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut, updateUser, getUserData as getUserDataAPICall } from './auth'
+import { signInWithFirebaseSDK, signOutWithFirebaseSDK } from './firebaseConfig'
 
 import { getAll as getAllCourses } from './api/courses'
+import { upload as uploadAvatar } from './api/avatar'
 
 export const App = () => {
   const [isLoading, setIsLoading] = React.useState(true)
@@ -30,6 +32,7 @@ export const App = () => {
 
   const {
     isUserLoggedIn,
+    userId,
     clearUser,
     setUser
   } = useAuthUser()
@@ -40,7 +43,7 @@ export const App = () => {
       await asyncAction()
     } catch (error) {
       setHasError(() => true)
-      setErrorMessage(() => error.data.error.message)
+      setErrorMessage(() => error.message || error.data.error.message)
     } finally {
       setIsLoading(() => false)
     }
@@ -54,9 +57,10 @@ export const App = () => {
   const getUserData = React.useCallback(async () => {
     const data = await getUserDataAPICall()
     setUser({
+      userID: data.localId,
       userDisplayName: data.displayName,
       userEmail: data.email,
-      userAvatar: data.avatar
+      userAvatar: data.photoUrl
     })
   }, [setUser])
 
@@ -64,6 +68,7 @@ export const App = () => {
     handleAsyncAction(async () => {
       await signIn(email, password)
       await Promise.all([
+        signInWithFirebaseSDK(email, password),
         getUserData(),
         fetchCourses()
       ])
@@ -95,7 +100,10 @@ export const App = () => {
   }, [fetchCourses, getUserData, handleAsyncAction])
 
   const onClickLogOut = React.useCallback(async () => {
-    await logOut()
+    await Promise.all([
+      logOut(),
+      signOutWithFirebaseSDK()
+    ])
     clearUser()
   }, [clearUser])
 
@@ -105,6 +113,14 @@ export const App = () => {
       await getUserData()
     })
   }, [getUserData, handleAsyncAction])
+
+  const onAvatarChangeProfile = React.useCallback(async (file) => {
+    handleAsyncAction(async () => {
+      const downloadURL = await uploadAvatar(userId, file, (progress) => console.log(`Upload progress is ${progress}%`))
+      await updateUser(undefined, downloadURL)
+      await getUserData()
+    })
+  }, [getUserData, handleAsyncAction, userId])
 
   const dismissError = React.useCallback(() => {
     setHasError(() => false)
@@ -140,6 +156,7 @@ export const App = () => {
                   element={
                     <PageProfile
                       onSaveChanges={onClickSaveChangesProfile}
+                      onAvatarChange={onAvatarChangeProfile}
                     />}
                 />
                 <Route
