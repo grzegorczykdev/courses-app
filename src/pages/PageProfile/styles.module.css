@@ -10,6 +10,24 @@
   width: 142px;
 }
 
+.contentMainWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.fileInput {
+  margin: 10px;
+  width: 100%;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+}
+
 @media (min-width: 476px) {
   .logo {
     width: 220px;

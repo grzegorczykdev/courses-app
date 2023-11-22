@@ -3,31 +3,50 @@
     "ecmaVersion": 11
   },
   "extends": [
-    "react-app", "plugin:react/recommended", "standard"
+    "react-app",
+    "plugin:react/recommended"
   ],
   "rules": {
-    "node/handle-callback-err": ["off"],
-    "operator-linebreak": ["off"],
+    "node/handle-callback-err": [
+      "off"
+    ],
+    "operator-linebreak": [
+      "off"
+    ],
     "react/jsx-curly-spacing": [
-      "warn", "never", {
+      "warn",
+      "never",
+      {
         "allowMultiline": true
       }
     ],
     "react/jsx-curly-brace-presence": [
-      "warn", {
+      "warn",
+      {
         "props": "always",
         "children": "never"
       }
     ],
-    "react/jsx-max-props-per-line": ["warn"],
+    "react/jsx-max-props-per-line": [
+      "warn"
+    ],
     "react/jsx-indent": [
-      "warn", 2
+      "warn",
+      2
     ],
     "react/jsx-indent-props": [
-      "warn", 2
+      "warn",
+      2
     ],
-    "react/jsx-closing-tag-location": ["warn"],
-    "react/jsx-closing-bracket-location": ["warn"],
-    "react/jsx-first-prop-new-line": ["warn", "multiline"]
+    "react/jsx-closing-tag-location": [
+      "warn"
+    ],
+    "react/jsx-closing-bracket-location": [
+      "warn"
+    ],
+    "react/jsx-first-prop-new-line": [
+      "warn",
+      "multiline"
+    ]
   }
 }

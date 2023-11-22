@@ -5,7 +5,6 @@ import { useFormContext } from 'react-hook-form'
 import { FIELD_IS_REQUIRED_VALIDATION_ERROR } from '../../consts'
 import TextField from '../TextField'
 import Button from '../Button'
-import Typography from '../Typography'
 
 import classes from './styles.module.css'
 
@@ -35,11 +34,7 @@ export const ProfileForm = (props) => {
       onSubmit={onSubmit}
       {...otherProps}
     >
-      <Typography
-        className={classes.header}
-        variant={'h1'}
-      >User profile
-      </Typography>
+
       <TextField
         disabled={true}
         className={classes.textField}

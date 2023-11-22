@@ -7,10 +7,14 @@ import { useForm, FormProvider } from 'react-hook-form'
 
 import Logo from '../../components/Logo'
 
-import MainLayout from '../../components/MainLayout/MainLayout'
+import MainLayout from '../../components/MainLayout/'
 
 import Button from '../../components/Button'
-import ProfileForm from '../../components/ProfileForm/ProfileForm'
+import ProfileForm from '../../components/ProfileForm/'
+import Typography from '../../components/Typography'
+import FileInput from '../../components/FileInput/'
+import Avatar from '../../components/Avatar/'
+
 import { useAuthUser } from '../../contexts/UserContext'
 import classes from './styles.module.css'
 
@@ -51,6 +55,10 @@ export const PageProfile = (props) => {
     navigate('/')
   }, [navigate])
 
+  const onAvatarChange = React.useCallback((file)=>{
+    console.log(file)
+  },[])
+
   return (
     <div
       className={`${classes.root}${className ? ` ${className}` : ''}`}
@@ -70,14 +78,31 @@ export const PageProfile = (props) => {
         }
 
         contentMain={
-          <FormProvider {...methods}>
-            <ProfileForm
-              onSubmit={handleSubmit(async (data) => {
+          <div className={classes.contentMainWrapper}>
+            <Typography
+              className={classes.header}
+              variant={'h1'}
+            >User profile
+            </Typography>
+            <Avatar
+              className={classes.avatar}
+              src={userAvatar}
+            >
+            </Avatar>
+            <FileInput
+              onChange={(e)=>onAvatarChange(e.target.files[0])}
+              className={classes.fileInput}
+            >Change avatar
+            </FileInput>
+            <FormProvider {...methods}>
+              <ProfileForm
+                onSubmit={handleSubmit(async (data) => {
                 await onSaveChanges(data.displayName)
                 onClickGoBack()
               })}
-            />
-          </FormProvider>
+              />
+            </FormProvider>
+          </div>
         }
       />
     </div>
