@@ -16,6 +16,9 @@ export const PageCourse = (props) => {
       sx={{
         height: '100vh',
         overflow: 'hidden',
+        '@media (max-width: 599.95px)':{
+          overflow: 'auto',
+        },
         ...sx
       }}
       {...otherProps}
@@ -25,14 +28,22 @@ export const PageCourse = (props) => {
         height: '100%',
         width: '100%',
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        '@media (max-width: 599.95px)':{
+          height: 'auto',
+          flexDirection: 'column',
+          minHeight: '100vh'
+        },
       }}
       >
         <Box
           sx={{
           flexGrow: 1,
           display:'flex',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          '@media (max-width: 599.95px)':{
+            flexGrow: 0,
+          },
         }}
         >
           <Ratio16x9>
@@ -52,11 +63,12 @@ export const PageCourse = (props) => {
             flexGrow: 1,
             overflowX:'hidden',
             overflowY:'scroll',
+            '@media (max-width: 599.95px)':{
+              overflow:'hidden'
+            },
           }}
           >
-            {
-              (new Array(111).fill(<p>Title</p>))
-            }
+            TITLE
           </Box>
         </Box>
         <Box
@@ -66,12 +78,15 @@ export const PageCourse = (props) => {
           bgcolor: 'red',
           overflowX:'hidden',
           overflowY:'scroll',
+          '@media (max-width: 599.95px)':{
+            height: 'auto',
+            width: '100%',
+            overflow: 'hidden',
+            flexGrow: 1,
+          },
         }}
         >
-          {
-
-          (new Array(111).fill(<p>Sidebar</p>))
-        }
+          SIDEBAR
         </Box>
       </Box>
     </Box>
