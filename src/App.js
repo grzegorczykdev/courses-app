@@ -164,7 +164,7 @@ export const App = () => {
             />
             <Route
               path={'courses/:courseId'}
-              element={<PageCourse />}
+              element={<PageCourse courses={courses}/>}
             >
               <Route
                 index={true}

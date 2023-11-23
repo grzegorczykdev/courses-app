@@ -63,7 +63,6 @@ export const CourseLayout = (props) => {
           </Ratio16x9>
           <Box
             sx={{
-            bgcolor:'pink',
             flexGrow: 1,
             overflowX:'hidden',
             overflowY:'auto',
