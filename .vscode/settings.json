@@ -1,23 +1,75 @@
 {
   "module-templates.engine": "handlebars",
   "module-templates.templates": {
-    "react-component-css-module": {
-      "displayName": "React component + CSS module",
+    "react-component-mui": {
+      "displayName": "React component + MUI",
       "defaultPath": "src/components",
-      "folder": "{{ pascal name }}",
+      "folder": "{{pascal name}}",
       "questions": {
-        "name": "Component name"
+        "name": "Component name",
       },
       "files": [
         {
-          "name": "{{ pascal name }}.js",
+          "name": "{{pascal name}}.js",
+          "content": [
+            "import React from 'react'",
+            "import PropTypes from 'prop-types'",
+            "",
+            "import { Box } from '@mui/material'",
+            "",
+            "export const {{pascal name}} = (props) => {",
+            "  const {",
+            "    sx,",
+            "    ...otherProps",
+            "  } = props",
+            "",
+            "  return (",
+            "    <Box",
+            "      sx=\\{{",
+            "        ...sx",
+            "      }}",
+            "      {...otherProps}",
+            "    >",
+            "",
+            "    </Box>",
+            "  )",
+            "}",
+            "",
+            "{{pascal name}}.propTypes = {",
+            "  sx: PropTypes.object",
+            "}",
+            "",
+            "export default {{pascal name}}",
+            ""
+          ]
+        },
+        {
+          "name": "index.js",
+          "content": [
+            "export * from './{{pascal name}}'",
+            "export { default } from './{{pascal name}}'",
+            ""
+          ]
+        }
+      ]
+    },
+    "react-component-css-module": {
+      "displayName": "React component + CSS module",
+      "defaultPath": "src/components",
+      "folder": "{{pascal name}}",
+      "questions": {
+        "name": "Component name",
+      },
+      "files": [
+        {
+          "name": "{{pascal name}}.js",
           "content": [
             "import React from 'react'",
             "import PropTypes from 'prop-types'",
             "",
             "import classes from './styles.module.css'",
             "",
-            "export const {{ pascal name }} = (props) => {",
+            "export const {{pascal name}} = (props) => {",
             "  const {",
             "    className,",
             "    ...otherProps",
@@ -33,19 +85,28 @@
             "  )",
             "}",
             "",
-            "{{ pascal name }}.propTypes = {",
+            "{{pascal name}}.propTypes = {",
             "  className: PropTypes.string",
             "}",
             "",
-            "export default {{ pascal name }}",
+            "export default {{pascal name}}",
             ""
           ]
-        }, {
+        },
+        {
           "name": "index.js",
-          "content": ["export * from './{{ pascal name }}'", "export { default } from './{{ pascal name }}'", ""]
-        }, {
+          "content": [
+            "export * from './{{pascal name}}'",
+            "export { default } from './{{pascal name}}'",
+            ""
+          ]
+        },
+        {
           "name": "styles.module.css",
-          "content": [".root {}", ""]
+          "content": [
+            ".root {}",
+            ""
+          ]
         }
       ]
     }

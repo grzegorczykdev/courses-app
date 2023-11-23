@@ -8,6 +8,7 @@ import Typography from '../Typography'
 export const CoursesList = (props) => {
   const {
     className,
+    onClickCourse,
     courses,
     ...otherProps
   } = props
@@ -40,6 +41,7 @@ export const CoursesList = (props) => {
                 key={course.id}
               >
                 <CourseCard
+                  onClick={() => onClickCourse(course.id)}
                   course={course}
                 />
               </div>
@@ -51,7 +53,8 @@ export const CoursesList = (props) => {
 
 CoursesList.propTypes = {
   className: PropTypes.string,
-  courses: PropTypes.arrayOf(CoursePropType)
+  courses: PropTypes.arrayOf(CoursePropType),
+  onClickCourse: PropTypes.func.isRequired
 }
 
 export default CoursesList

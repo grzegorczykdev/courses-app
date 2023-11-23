@@ -31,6 +31,10 @@ export const PageCoursesList = (props) => {
     navigate('/profile')
   }, [navigate])
 
+  const onClickCourse = React.useCallback((courseId) => {
+    navigate(`/courses/${courseId}`)
+  }, [navigate])
+
   const [searchPhrase, setSearchPhrase] = React.useState('')
   const [isUserDropdownOpen, setIsUserDropdownOpen] = React.useState('')
 
@@ -98,7 +102,10 @@ export const PageCoursesList = (props) => {
                   }
 
         contentMain={
-          <CoursesList courses={filteredCourses}/>
+          <CoursesList
+            onClickCourse={onClickCourse}
+            courses={filteredCourses}
+          />
                   }
       />
     </div>

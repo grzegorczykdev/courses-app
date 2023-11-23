@@ -8,6 +8,7 @@ import Button from '../Button'
 export const CourseCard = (props) => {
   const {
     className,
+    onClick,
     course,
     ...otherProps
   } = props
@@ -61,10 +62,11 @@ export const CourseCard = (props) => {
       </div>
       <div className={classes.actionsWrapper}>
         <Button
+          onClick={onClick}
           color={'primary'}
           variant={'contained'}
           icon={'eye'}
-          disabled={true}
+          disabled={!onClick}
         >
           VIEW COURSE
         </Button>
@@ -82,7 +84,8 @@ export const CoursePropType = PropTypes.shape({
 
 CourseCard.propTypes = {
   className: PropTypes.string,
-  course: CoursePropType
+  course: CoursePropType,
+  onClick: PropTypes.func
 }
 
 export default CourseCard
