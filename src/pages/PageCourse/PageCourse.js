@@ -14,22 +14,66 @@ export const PageCourse = (props) => {
   return (
     <Box
       sx={{
+        height: '100vh',
+        overflow: 'hidden',
         ...sx
       }}
       {...otherProps}
     >
-      PageCourse
-      <Ratio16x9>
+      <Box
+        sx={{
+        height: '100%',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row'
+      }}
+      >
         <Box
-          sx={{ 
+          sx={{
+          flexGrow: 1,
+          display:'flex',
+          flexDirection: 'column'
+        }}
+        >
+          <Ratio16x9>
+            <Box
+              sx={{ 
             width: '100%',
             height: '100%',
             bgcolor:'#000'
           }}
-        >
-          <Outlet/>
+            >
+              <Outlet/>
+            </Box>
+          </Ratio16x9>
+          <Box
+            sx={{
+            bgcolor:'pink',
+            flexGrow: 1,
+            overflowX:'hidden',
+            overflowY:'scroll',
+          }}
+          >
+            {
+              (new Array(111).fill(<p>Title</p>))
+            }
+          </Box>
         </Box>
-      </Ratio16x9>
+        <Box
+          sx={{
+          width: '320px',
+          height: '100%',
+          bgcolor: 'red',
+          overflowX:'hidden',
+          overflowY:'scroll',
+        }}
+        >
+          {
+
+          (new Array(111).fill(<p>Sidebar</p>))
+        }
+        </Box>
+      </Box>
     </Box>
   )
 }
