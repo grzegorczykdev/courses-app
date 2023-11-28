@@ -21,6 +21,7 @@ import { useAuthUser } from './contexts/UserContext'
 import { signIn, signUp, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut, updateUser, getUserData as getUserDataAPICall } from './auth'
 import { signInWithFirebaseSDK, signOutWithFirebaseSDK } from './firebaseConfig'
 
+import { getMultiple } from './api/lessons'
 import { getAll as getAllCourses } from './api/courses'
 import { upload as uploadAvatar } from './api/avatar'
 
@@ -32,6 +33,7 @@ export const App = () => {
   const [infoMessage, setInfoMessage] = React.useState('')
 
   const [courses, setCourses] = React.useState(null)
+  const [lessons, setLessons] = React.useState(null)
 
   const {
     isUserLoggedIn,
@@ -56,6 +58,14 @@ export const App = () => {
     const courses = await getAllCourses()
     setCourses(() => courses)
   }, [])
+
+  const fetchLessonsByIds = React.useCallback(async (lessonIds) => {
+    handleAsyncAction(async () => {
+      const lessons = await getMultiple(lessonIds)
+      setLessons(() => lessons)
+    })
+  }, [handleAsyncAction])
+
 
   const getUserData = React.useCallback(async () => {
     const data = await getUserDataAPICall()
@@ -164,7 +174,11 @@ export const App = () => {
             />
             <Route
               path={'courses/:courseId'}
-              element={<PageCourse courses={courses}/>}
+              element={<PageCourse
+                lessons={lessons}
+                courses={courses}
+                fetchLessonsByIds={fetchLessonsByIds}
+                       />}
             >
               <Route
                 index={true}

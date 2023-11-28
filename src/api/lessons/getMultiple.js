@@ -1,4 +1,4 @@
-import get from "./"
+import {get} from "./"
 
 export const getMultiple = async (lessonIds) => {
   const requestsPromises = lessonIds.map((lessonId)=>get(lessonId))

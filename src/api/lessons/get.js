@@ -1,10 +1,10 @@
 import { LESSONS_KEY } from './consts'
 import { makeAuthorizedRequest } from '../../auth'
-import { makeApiUrl, objectToArray } from '..'
+import { makeApiUrl } from '..'
 
 export const get = async (lessonId) => {
-  const rawData = await makeAuthorizedRequest(makeApiUrl(LESSONS_KEY + '/' + lessonId))
-  return objectToArray(rawData)
+  const lesson = await makeAuthorizedRequest(makeApiUrl(LESSONS_KEY + '/' + lessonId))
+  return lesson
 }
 
 export default get
