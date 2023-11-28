@@ -4,7 +4,7 @@ import { makeApiUrl } from '..'
 
 export const get = async (lessonId) => {
   const lesson = await makeAuthorizedRequest(makeApiUrl(LESSONS_KEY + '/' + lessonId))
-  return lesson
+  return {...lesson, 'id':lessonId}
 }
 
 export default get

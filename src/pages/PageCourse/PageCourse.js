@@ -2,9 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import CourseLayout from '../../layouts/CourseLayout/CourseLayout'
-import { Outlet, useParams } from 'react-router-dom'
+import { Outlet, useParams, useNavigate } from 'react-router-dom'
 import { CoursePropType } from '../../components/CourseCard'
-import { Box, Typography } from '@mui/material'
+import {Videocam} from '@mui/icons-material';
+import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography, Tooltip } from '@mui/material'
 
 
 
@@ -16,6 +17,8 @@ export const PageCourse = (props) => {
     fetchLessonsByIds,
     ...otherProps
   } = props
+
+  const navigate = useNavigate()
 
   const {courseId} = useParams()
 
@@ -31,10 +34,56 @@ export const PageCourse = (props) => {
     fetchLessonsByIds(lessonsIds)
   }, [fetchLessonsByIds, lessonsIds])
 
+console.log(lessons)
+
   return (
     <CourseLayout
-      contentSlot={<Outlet/>}
-      sidebarSlot={'SIDEBAR'}
+      contentSlot={
+        <Box
+          sx={{ 
+            width: '100%',
+            height: '100%',
+            bgcolor:'#000',
+            color: 'white'
+          }}
+        >
+          <Outlet/>
+        </Box>}
+      sidebarSlot={
+
+        <List>
+          {
+        lessons && lessons.map((lesson, i)=>(
+          <ListItem
+            key={lesson.id}
+            disablePadding
+          >
+            <Tooltip 
+              title={lesson.title}
+              enterDelay={500}
+            >
+              <ListItemButton
+                onClick={()=>navigate(lesson.id)}
+              >
+                <ListItemIcon>
+                  <Videocam/>
+                </ListItemIcon>
+                <ListItemText
+                  primaryTypographyProps={{
+                noWrap:true
+              }}
+                >
+                  {`${i+1} . ${lesson.title}`}
+                </ListItemText>
+              </ListItemButton>
+            </Tooltip>
+          </ListItem>
+        )
+        )
+        }
+        </List>
+
+      }
       titleSlot={
         <Box
           sx={{
